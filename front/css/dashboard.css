@@ -1,0 +1,170 @@
+/* dashboard.css - AGROCOOP TECH Dashboard */
+
+:root {
+    --green-main: #43a047;
+    --green-light: #e8f5e9;
+    --green-mid: #66bb6a;
+    --green-dark: #388e3c;
+    --white: #fff;
+    --gray-border: #c8e6c9;
+    --shadow: 0 2px 8px rgba(67, 160, 71, 0.08);
+    --radius: 8px;
+    --font-main: 'Segoe UI', Arial, sans-serif;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-main);
+    background: var(--green-light);
+    color: #222;
+    min-height: 100vh;
+}
+
+header {
+    background: var(--green-main);
+    color: var(--white);
+    padding: 32px 0 16px 0;
+    text-align: center;
+    box-shadow: var(--shadow);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.2rem;
+    letter-spacing: 2px;
+}
+
+header h2 {
+    margin: 8px 0 0 0;
+    font-size: 1.1rem;
+    font-weight: 400;
+}
+
+section {
+    margin: 32px auto;
+    max-width: 900px;
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 24px 32px;
+}
+
+section h3 {
+    margin-top: 0;
+    color: var(--green-main);
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+ul li {
+    margin-bottom: 10px;
+    font-size: 1.05rem;
+}
+
+ul li strong {
+    color: var(--green-dark);
+}
+
+nav {
+    margin: 12px 0 0 0;
+    font-size: 1.1rem;
+}
+
+nav a {
+    color: var(--green-main);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+nav a:hover {
+    background: var(--green-light);
+    text-decoration: underline;
+}
+
+/* Dashboard Cards */
+.dashboard-cards {
+    display: flex;
+    gap: 24px;
+    margin-top: 16px;
+    justify-content: flex-start;
+}
+
+.dashboard-card {
+    background: var(--green-light);
+    border-radius: var(--radius);
+    padding: 16px;
+    width: 220px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dashboard-card.white {
+    background: var(--white);
+    border: 1px solid var(--gray-border);
+}
+
+.dashboard-card h4 {
+    margin: 0 0 8px 0;
+    color: var(--green-main);
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.dashboard-card p {
+    margin: 0 0 8px 0;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--green-dark);
+}
+
+.dashboard-card svg {
+    margin-top: 8px;
+    display: block;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 24px 0 16px 0;
+    background: var(--green-main);
+    color: var(--white);
+    font-size: 1rem;
+    letter-spacing: 1px;
+    margin-top: 40px;
+    border-radius: 0 0 var(--radius) var(--radius);
+    box-shadow: var(--shadow);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    section {
+        padding: 16px 8px;
+    }
+    .dashboard-cards {
+        flex-direction: column;
+        gap: 16px;
+        align-items: center;
+    }
+    .dashboard-card, .dashboard-card.white {
+        width: 100%;
+        max-width: 320px;
+    }
+}
+
+/* Utilitário para esconder cards se necessário */
+.hide {
+    display: none !important;
+}
