@@ -1,18 +1,38 @@
-/* dashboard.css - AGROCOOP TECH Dashboard */
+/* dashboard.css - AGROCOOP TECH Dashboard - CORES AJUSTADAS */
+.Logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+}
+
+.Logo img {
+    height: 56px;
+    width: auto;
+    display: block;
+}
+
+
 
 :root {
-    --green-main: #43a047;
-    --green-light: #e8f5e9;
-    --green-mid: #66bb6a;
+    --green-main: #2e7d32;
+    /* navbar/footer fundo principal */
+    --green-light: #c8e6c9;
+    /* navbar__signup hover */
+    --green-mid: #388e3c;
+    /* navbar hover */
     --green-dark: #388e3c;
+    /* navbar hover */
     --white: #fff;
     --gray-border: #c8e6c9;
-    --shadow: 0 2px 8px rgba(67, 160, 71, 0.08);
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+    /* igual navbar/footer */
     --radius: 8px;
     --font-main: 'Segoe UI', Arial, sans-serif;
 }
 
-html, body {
+html,
+body {
     margin: 0;
     padding: 0;
     font-family: var(--font-main);
@@ -79,7 +99,8 @@ nav {
 }
 
 nav a {
-    color: var(--green-main);
+    color: var(--white);
+    background: var(--green-main);
     text-decoration: none;
     font-weight: 500;
     padding: 4px 12px;
@@ -88,7 +109,7 @@ nav a {
 }
 
 nav a:hover {
-    background: var(--green-light);
+    background: var(--green-mid);
     text-decoration: underline;
 }
 
@@ -153,12 +174,15 @@ footer {
     section {
         padding: 16px 8px;
     }
+
     .dashboard-cards {
         flex-direction: column;
         gap: 16px;
         align-items: center;
     }
-    .dashboard-card, .dashboard-card.white {
+
+    .dashboard-card,
+    .dashboard-card.white {
         width: 100%;
         max-width: 320px;
     }
