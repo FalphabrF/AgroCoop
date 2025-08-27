@@ -21,12 +21,21 @@
             <a href="/front/pages/login.html#cadastro" class="navbar__signup">Cadastro</a>
         </div>
     </header>
+    <!-- NAVBAR -->
     <nav id="navbar">
         <script>
-            fetch('/AgroCoop/front/components/navbar.html')
+            fetch('../components/navbar.html')
                 .then(res => res.text())
                 .then(html => {
-                    document.getElementById('navbar').outerHTML = html;
+                    document.getElementById('navbar').innerHTML = html;
+
+                    // remove link da página atual também no navbar
+                    const currentPage = window.location.pathname.split("/").pop();
+                    document.querySelectorAll("nav a").forEach(link => {
+                        if (link.getAttribute("href")?.includes(currentPage)) {
+                            link.remove();
+                        }
+                    });
                 })
                 .catch(err => console.error("Erro ao carregar navbar:", err));
         </script>
@@ -100,17 +109,23 @@
         </div>
     </section>
 
-    <footer>
-        <script>
-            fetch('/AgroCoop/front/components/footer.html')
-                .then(res => res.text())
-                .then(html => {
-                    document.querySelector('footer').outerHTML = html;
-                })
-                .catch(err => console.error("Erro ao carregar footer:", err));
+    <footer id="footer"></footer>
+    <script>
+        fetch('../components/footer.html')
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById('footer').outerHTML = html;
 
-        </script>
-    </footer>
+                // remove link da página atual também no footer
+                const currentPage = window.location.pathname.split("/").pop();
+                document.querySelectorAll("footer a").forEach(link => {
+                    if (link.getAttribute("href")?.includes(currentPage)) {
+                        link.remove();
+                    }
+                });
+            })
+            .catch(err => console.error("Erro ao carregar footer:", err));
+    </script>
 
     <script src="../js/dashboard.js"></script>
 </body>
