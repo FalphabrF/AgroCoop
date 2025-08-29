@@ -22,25 +22,25 @@
         </div>
     </header>
     <!-- NAVBAR -->
-   <nav id="navbar">
-  <script>
-    fetch('../components/navbar.html')
-      .then(res => res.text())
-      .then(html => {
-        // Substitui o placeholder por TODO o conteúdo do componente
-        document.getElementById('navbar').outerHTML = html;
+    <nav id="navbar">
+        <script>
+            fetch('../components/navbar.html')
+                .then(res => res.text())
+                .then(html => {
+                    // Substitui o placeholder por TODO o conteúdo do componente
+                    document.getElementById('navbar').outerHTML = html;
 
-        // remove link da página atual apenas dentro da navbar carregada
-        const currentPage = window.location.pathname.split("/").pop();
-        document.querySelectorAll(".navbar a").forEach(link => {
-          if (link.getAttribute("href")?.includes(currentPage)) {
-            link.remove();
-          }
-        });
-      })
-      .catch(err => console.error("Erro ao carregar navbar:", err));
-  </script>
-</nav>
+                    // remove link da página atual apenas dentro da navbar carregada
+                    const currentPage = window.location.pathname.split("/").pop();
+                    document.querySelectorAll(".navbar a").forEach(link => {
+                        if (link.getAttribute("href")?.includes(currentPage)) {
+                            link.remove();
+                        }
+                    });
+                })
+                .catch(err => console.error("Erro ao carregar navbar:", err));
+        </script>
+    </nav>
 
     <section>
         <h3>Resumo de Atividades</h3>
@@ -60,6 +60,7 @@
             <a href="#" id="atalho-notificacoes">Notificações</a>
         </nav>
     </section>
+
     <section>
         <h3>Dashboard</h3>
         <div class="dashboard-cards">

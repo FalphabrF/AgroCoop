@@ -12,8 +12,6 @@
     display: block;
 }
 
-
-
 :root {
     --green-main: #2e7d32;
     /* navbar/footer fundo principal */
@@ -93,7 +91,7 @@ ul li strong {
     color: var(--green-dark);
 }
 
-section>nav {
+section > nav {
     margin: 12px 0 0 0;
     font-size: 1.1rem;
 }
