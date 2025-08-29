@@ -93,9 +93,13 @@ ul li strong {
     color: var(--green-dark);
 }
 
-nav {
+section>nav {
     margin: 12px 0 0 0;
     font-size: 1.1rem;
+}
+
+.navbar {
+    margin: 0;
 }
 
 nav a {
