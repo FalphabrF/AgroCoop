@@ -1,38 +1,44 @@
-/* Reset */
+/* Reset básico */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* Corpo da página */
 body {
     font-family: "Segoe UI", sans-serif;
-    background: #f1f8f4;
+    background-color: #f1f8f4;
     color: #333;
 }
 
+/* Container principal */
 .auth-container {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    padding: 1rem;
 }
 
+/* Caixa de autenticação */
 .auth-box {
-    background: white;
+    background-color: #fff;
     padding: 2.5rem 2rem;
     border-radius: 12px;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 400px;
     text-align: center;
 }
 
+/* Título */
 .auth-box h2 {
     color: #2e7d32;
     margin-bottom: 1.5rem;
 }
 
+/* Formulário */
 .auth-box form {
     display: flex;
     flex-direction: column;
@@ -40,28 +46,57 @@ body {
     text-align: left;
 }
 
+/* Campos de entrada */
 .auth-box input {
     padding: 0.8rem;
     border-radius: 5px;
     border: 1px solid #ccc;
     font-size: 1rem;
+    transition: border-color 0.3s;
 }
 
+.auth-box input:focus {
+    border-color: #388e3c;
+    outline: none;
+}
+
+/* Botões */
 .btn {
-    background: #388e3c;
-    color: white;
+    background-color: #388e3c;
+    color: #fff;
     padding: 0.8rem;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-weight: bold;
-    transition: 0.3s;
+    transition: background-color 0.3s;
+    text-align: center;
+    text-decoration: none;
 }
 
 .btn:hover {
-    background: #2e7d32;
+    background-color: #2e7d32;
 }
 
+/* Botão de cancelar */
+.btn.cancel {
+    background-color: #ccc;
+    color: #333;
+}
+
+.btn.cancel:hover {
+    background-color: #aaa;
+}
+
+/* Grupo de botões */
+.btn-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 1rem;
+}
+
+/* Link para login */
 .switch {
     margin-top: 1rem;
     font-size: 0.9rem;
@@ -71,25 +106,9 @@ body {
 .switch a {
     color: #388e3c;
     text-decoration: none;
+    font-weight: bold;
 }
 
 .switch a:hover {
     text-decoration: underline;
-}
-
-.btn-group {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    margin-top: 1rem;
-}
-
-.btn.cancel {
-    background: #ccc;
-    color: #333;
-    text-decoration: none;
-}
-
-.btn.cancel:hover {
-    background: #999;
 }
