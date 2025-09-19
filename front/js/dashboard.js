@@ -1,27 +1,69 @@
-// dashboard.js - Lógica da Dashboard AGROCOOP TECH
+// dashboard.js
+/*
+    if (!userId) {
+      window.location.href = "../public/login.html"; // redireciona se não estiver logado
+      return;
+    }
+*/
+   document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    const userId = localStorage.getItem("userId");
 
-// Dados simulados para os cards
-const dadosDashboard = {
-    producao: 1200,
-    vendas: 350000,
-    estoque: 800,
-    entregas: 5
-};
+    // Usuário
+    const userRes = await fetch(`/api/user/${userId}`);
+    const userData = await userRes.json();
+    document.getElementById("welcome-msg").textContent = `Bem-vindo, ${userData.nome} 👋`;
 
-// Função para atualizar os cards do dashboard
-function atualizarDashboard() {
-    document.getElementById('card-producao').textContent = `${dadosDashboard.producao} t`;
-    document.getElementById('card-vendas').textContent = `R$ ${dadosDashboard.vendas.toLocaleString()}`;
-    document.getElementById('card-estoque').textContent = `${dadosDashboard.estoque} t`;
-    document.getElementById('card-entregas').textContent = `${dadosDashboard.entregas} entregas agendadas`;
-}
+    // Vendas
+    const vendasRes = await fetch(`/api/vendas/${userId}`);
+    const vendasData = await vendasRes.json();
+    document.getElementById("total-vendas").textContent = vendasData.total;
 
-// Atalhos rápidos
-document.getElementById('atalho-votacoes').onclick = () => window.location.href = 'votacoes.html';
-document.getElementById('atalho-compras').onclick = () => window.location.href = 'compras.html';
-document.getElementById('atalho-notificacoes').onclick = () => window.location.href = 'perfil.html#notificacoes';
+    // Produtos
+    const produtosRes = await fetch(`/api/produtos/${userId}`);
+    const produtosData = await produtosRes.json();
+    document.getElementById("total-produtos").textContent = produtosData.length;
 
-// Inicialização ao carregar a página
-document.addEventListener('DOMContentLoaded', () => {
-    atualizarDashboard();
+    // Preencher tabela
+    const tbody = document.querySelector("#produtosTable tbody");
+    produtosData.forEach(prod => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${prod.nome}</td>
+        <td>${prod.categoria}</td>
+        <td>R$ ${prod.preco.toFixed(2)}</td>
+        <td>${prod.estoque}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    // Gráfico
+    const ctx = document.getElementById("vendasChart").getContext("2d");
+    new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: vendasData.meses,
+        datasets: [{
+          label: "Vendas",
+          data: vendasData.valores,
+          backgroundColor: "#388e3c"
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false },
+          title: {
+            display: true,
+            text: "Vendas Mensais",
+            color: "#2e7d32",
+            font: { size: 18 }
+          }
+        }
+      }
+    });
+
+  } catch (err) {
+    console.error("Erro ao carregar dashboard:", err);
+  }
 });
