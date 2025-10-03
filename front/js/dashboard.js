@@ -5,7 +5,39 @@
       return;
     }
 */
-   document.addEventListener("DOMContentLoaded", async () => {
+
+
+
+// ===== Mega Menu =====
+document.addEventListener("DOMContentLoaded", () => {
+  const triggers = document.querySelectorAll(".menu-trigger");
+
+  triggers.forEach(trigger => {
+    trigger.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      const parent = trigger.parentElement;
+      const submenu = parent.querySelector(".submenu");
+
+      // Fecha outros submenus abertos
+      document.querySelectorAll(".submenu").forEach(menu => {
+        if (menu !== submenu) menu.classList.remove("active");
+      });
+
+      // Alterna o submenu clicado
+      submenu.classList.toggle("active");
+    });
+  });
+
+  // Fecha ao clicar fora
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".menu")) {
+      document.querySelectorAll(".submenu").forEach(menu => menu.classList.remove("active"));
+    }
+  });
+});
+
+document.addEventListener("DOMContentLoaded", async () => {
   try {
     const userId = localStorage.getItem("userId");
 
