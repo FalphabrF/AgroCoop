@@ -4,11 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AgroCoop - Dashboard</title>
-    <link rel="stylesheet" href="../front/css/dashboard.css">
-    <script src="../front/js/dashboard.js" defer></script>
+    <title>AgroCoop - Contratação de Serviços</title>
+    <link rel="stylesheet" href="../front/css/ComprasServiços.css">
+    <script src="../front/js/ComprasServiços.js" defer></script>
     <link rel="shortcut icon" href="../img/image.png" type="image/x-icon">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -29,7 +28,7 @@
         </nav>
     </header>
 
-    <!-- Menu flutuante igual à página inicial -->
+    <!-- Menu flutuante -->
     <nav class="mega">
         <ul class="menu">
             <li class="menu-item">
@@ -55,7 +54,7 @@
                 <a href="#" class="menu-trigger">Produtos & Serviços</a>
                 <ul class="submenu">
                     <li><a href="CompraServiços.html">Serviços</a></li>
-                    <li><a href="CompraServiços.html">Produtos</a></li>
+                    <li><a href="CompraProdutos.html">Produtos</a></li>
                 </ul>
             </li>
         </ul>
@@ -63,36 +62,24 @@
 
     <!-- Main -->
     <main class="dashboard">
-        <!-- Boas-vindas -->
         <section class="welcome">
-            <h1 id="welcome-msg">Bem-vindo 👋</h1>
+            <h1 id="welcome-msg">Contratação de Serviços</h1>
         </section>
 
-        <!-- Total de Vendas -->
-        <section class="total-vendas">
-            <h2>Total de Vendas: <span id="total-vendas">0</span></h2>
-        </section>
-
-        <!-- Gráfico de Vendas -->
-        <section class="charts">
-            <h2>Gráfico de Vendas</h2>
-            <canvas id="vendasChart" style="max-height: 400px;"></canvas>
-        </section>
-
-        <!-- Tabela de Produtos -->
-        <section class="products-table">
-            <h2>Produtos Cadastrados</h2>
+        <!-- Tabela de Serviços -->
+        <section class="services-table">
+            <h2>Serviços Disponíveis</h2>
             <table>
-                <thead class="table-produtos">
+                <thead class="table-servicos">
                     <tr>
                         <th>Código</th>
-                        <th>Nome</th>
-                        <th>Categoria</th>
-                        <th>Preço de Venda</th>
-                        <th>Estoque</th>
+                        <th>Nome do Serviço</th>
+                        <th>Descrição</th>
+                        <th>Preço</th>
+                        <th>Ação</th>
                     </tr>
                 </thead>
-                <tbody id="produtos-tbody">
+                <tbody id="servicos-tbody">
                     <!-- Dados do banco serão inseridos via JS -->
                 </tbody>
             </table>

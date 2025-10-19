@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroCoop - Compra de Produtos</title>
+    <link rel="stylesheet" href="../front/css/CompraProdutos.css">
+    <script src="../front/js/CompraProdutos.js" defer></script>
+    <link rel="shortcut icon" href="../img/image.png" type="image/x-icon">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="logo">
+            <img src="../img/image.png" alt="Logo AgroCoop">
+            <span>AgroCoop🌱</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="perfil.html">Meu Perfil</a></li>
+                <li><a href="produtos.html">Produtos</a></li>
+                <li><a href="novo-produto.html">Novo Produto</a></li>
+                <li><a href="vendas.html">Vendas</a></li>
+                <li><a href="../public/inicial.html">Sair</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main -->
+    <main class="compra-produtos">
+        <section class="welcome">
+            <h1>Compra de Produtos</h1>
+        </section>
+
+        <!-- Tabela de Produtos -->
+        <section class="products-table">
+            <h2>Produtos Disponíveis</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Nome</th>
+                        <th>Categoria</th>
+                        <th>Preço</th>
+                        <th>Ação</th>
+                    </tr>
+                </thead>
+                <tbody id="produtos-tbody">
+                    <!-- Os dados dos produtos serão puxados do banco de dados via JS -->
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 AgroCoop - Todos os direitos reservados</p>
+    </footer>
+</body>
+</html>

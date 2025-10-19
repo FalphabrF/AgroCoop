@@ -1,0 +1,124 @@
+/* ===== Reset ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Segoe UI", sans-serif;
+    background: #f9f9f9;
+    color: #333;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ===== Navbar ===== */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: #2e7d32;
+    color: #fff;
+}
+
+.navbar .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.navbar .logo img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.navbar ul {
+    display: flex;
+    list-style: none;
+    gap: 1.5rem;
+}
+
+.navbar ul li a {
+    color: #fff;
+    text-decoration: none;
+    transition: 0.3s;
+    font-weight: 500;
+}
+
+.navbar ul li a:hover,
+.navbar ul li a.active {
+    text-decoration: underline;
+}
+
+/* ===== Main ===== */
+main.compra-produtos {
+    flex: 1;
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+}
+
+/* Welcome */
+.welcome {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.welcome h1 {
+    color: #2e7d32;
+    font-size: 2rem;
+}
+
+/* Products Table */
+.products-table {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    margin-bottom: 2rem;
+}
+
+.products-table h2 {
+    text-align: center;
+    color: #2e7d32;
+    margin-bottom: 1rem;
+}
+
+.products-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.products-table th,
+.products-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.products-table th {
+    background-color: #2e7d32;
+    color: #fff;
+    font-weight: 600;
+}
+
+.products-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* ===== Footer ===== */
+.footer {
+    background: #2e7d32;
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+    width: 100%;
+}

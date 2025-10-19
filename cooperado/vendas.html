@@ -1,21 +1,18 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AgroCoop - Dashboard</title>
-    <link rel="stylesheet" href="../front/css/dashboard.css">
-    <script src="../front/js/dashboard.js" defer></script>
+    <title>AgroCoop - Minhas Vendas</title>
+    <link rel="stylesheet" href="../front/css/vendas.css">
+    <script src="../front/js/vendas.js" defer></script>
     <link rel="shortcut icon" href="../img/image.png" type="image/x-icon">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
-    <!-- Navbar -->
     <header class="navbar">
         <div class="logo">
-            <img src="../img/image.png" alt="Logo AgroCoop">
+            <img src="../img/image.png" alt="Logo AgroCoop" class="logo-img">
             <span>AgroCoop🌱</span>
         </div>
         <nav>
@@ -23,13 +20,12 @@
                 <li><a href="perfil.html">Meu Perfil</a></li>
                 <li><a href="produtos.html">Produtos</a></li>
                 <li><a href="novo-produto.html">Novo Produto</a></li>
-                <li><a href="vendas.html">Vendas</a></li>
+                <li><a href="vendas.html" class="active">Vendas</a></li>
                 <li><a href="../public/inicial.html">Sair</a></li>
             </ul>
         </nav>
     </header>
 
-    <!-- Menu flutuante igual à página inicial -->
     <nav class="mega">
         <ul class="menu">
             <li class="menu-item">
@@ -41,65 +37,58 @@
             <li class="menu-item">
                 <a href="#" class="menu-trigger">Trabalhe na AgroCoop</a>
                 <ul class="submenu">
-                    <li><a href="../public/cadastro.html">Seja um Colaborador</a></li>
+                    <li><a href="cadastro.html">Seja um Colaborador</a></li>
                 </ul>
             </li>
             <li class="menu-item">
                 <a href="#" class="menu-trigger">Fornecedores</a>
                 <ul class="submenu">
                     <li><a href="../cooperado/cooperados.html">Melhores Fornecedores</a></li>
-                    <li><a href="../cooperado/vantagens.html">Vantagens De Se Tornar Um Cooperado</a></li>
                 </ul>
             </li>
             <li class="menu-item">
                 <a href="#" class="menu-trigger">Produtos & Serviços</a>
                 <ul class="submenu">
-                    <li><a href="CompraServiços.html">Serviços</a></li>
-                    <li><a href="CompraServiços.html">Produtos</a></li>
+                    <li><a href="../">Novidades em Breve</a></li>
+                    <li><a href="../">Mais Oportunidades</a></li>
                 </ul>
             </li>
         </ul>
     </nav>
 
-    <!-- Main -->
-    <main class="dashboard">
-        <!-- Boas-vindas -->
-        <section class="welcome">
-            <h1 id="welcome-msg">Bem-vindo 👋</h1>
+    <main class="vendas-page">
+        <section class="topbar">
+            <h1>Histórico de Vendas</h1>
+            <div class="actions">
+                <input id="buscar-venda" type="search" placeholder="Buscar por data, produto ou valor..." aria-label="Buscar vendas">
+                <button id="btn-atualizar" aria-label="Atualizar lista de vendas">Atualizar</button>
+            </div>
         </section>
 
-        <!-- Total de Vendas -->
-        <section class="total-vendas">
-            <h2>Total de Vendas: <span id="total-vendas">0</span></h2>
-        </section>
-
-        <!-- Gráfico de Vendas -->
-        <section class="charts">
-            <h2>Gráfico de Vendas</h2>
-            <canvas id="vendasChart" style="max-height: 400px;"></canvas>
-        </section>
-
-        <!-- Tabela de Produtos -->
-        <section class="products-table">
-            <h2>Produtos Cadastrados</h2>
+        <section class="tabela-vendas">
+            <h2>Vendas Realizadas</h2>
             <table>
-                <thead class="table-produtos">
+                <thead>
                     <tr>
-                        <th>Código</th>
-                        <th>Nome</th>
-                        <th>Categoria</th>
-                        <th>Preço de Venda</th>
-                        <th>Estoque</th>
+                        <th>ID</th>
+                        <th>Data</th>
+                        <th>Itens</th>
+                        <th>Total</th>
                     </tr>
                 </thead>
-                <tbody id="produtos-tbody">
-                    <!-- Dados do banco serão inseridos via JS -->
+                <tbody id="vendas-tbody">   
+                    <!-- preenchido via JS -->
                 </tbody>
             </table>
         </section>
+
+        <section class="detalhes-venda" id="detalhes-venda" hidden>
+            <h2>Detalhes da Venda</h2>
+            <div id="venda-itens"></div>
+            <button id="btn-voltar" aria-label="Voltar para a lista de vendas">Voltar</button>
+        </section>
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
         <p>&copy; 2025 AgroCoop - Todos os direitos reservados</p>
     </footer>

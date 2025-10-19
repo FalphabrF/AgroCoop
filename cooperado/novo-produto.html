@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Produto/Serviço</title>
+    <link rel="stylesheet" href="../front/css/novo-produto.css">
+    <link rel="shortcut icon" type="image/x-icon" href="../img/icon.png">
+    <script>
+        function toggleServiceFields() {
+            const tipo = document.getElementById('tipo').value;
+            const serviceFields = document.getElementById('serviceFields');
+            if (tipo === 'servico') {
+                serviceFields.style.display = 'block';
+            } else {
+                serviceFields.style.display = 'none';
+            }
+        }
+    </script>
+</head>
+<body>
+    <main class="auth-container">
+        <div class="auth-box">
+            <h2>Cadastro de Produto/Serviço</h2>
+            <p class="subtitle">Preencha os dados abaixo para cadastrar um novo produto ou serviço.</p>
+
+            <form action="#" method="post">
+                <label for="nomeCooperado">Nome Cooperado:</label>
+                <input type="text" id="nomeCooperado" name="nomeCooperado" placeholder="Digite seu nome" required>
+
+                <label for="nomeProduto">Nome do Produto/Serviço:</label>
+                <input type="text" id="nomeProduto" name="nomeProduto" placeholder="Digite o nome" required>
+
+                <label for="descricao">Descrição:</label>
+                <textarea id="descricao" name="descricao" placeholder="Escreva a descrição..." rows="5" required></textarea>
+
+                <label for="preco">Preço:</label>
+                <input type="number" id="preco" name="preco" step="0.01" placeholder="Digite o preço" required>
+
+                <label for="tipo">Tipo:</label>
+                <select id="tipo" name="tipo" onchange="toggleServiceFields()" required>
+                    <option value="produto">Produto</option>
+                    <option value="servico">Serviço</option>
+                </select>
+
+                <div id="serviceFields" style="display:none;">
+                    <label for="custoServico">Custo do Serviço:</label>
+                    <input type="number" id="custoServico" name="custoServico" step="0.01" placeholder="Digite o custo do serviço" required>
+
+                    <label for="materiais">Materiais Utilizados:</label>
+                    <input type="text" id="materiais" name="materiais" placeholder="Com o que será feito o serviço?" required>
+
+                    <label for="tempoServico">Tempo Estimado:</label>
+                    <input type="text" id="tempoServico" name="tempoServico" placeholder="Tempo que demorará o serviço" required>
+                </div>
+
+                <div class="btn-group">
+                    <button type="submit" class="btn">Cadastrar</button>
+                    <a href="/cooperado/dashboard.html" class="btn cancel">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+</html>
