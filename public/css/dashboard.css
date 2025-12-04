@@ -1,0 +1,357 @@
+/* Base Reset (Assumindo que você já tem ou pode usar este) */
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+body { background-color: #f4f6f8; color: #333; }
+
+/* Navbar (Padrão do seu projeto) */
+.navbar { background: #2e7d32; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; color: white; }
+.navbar .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: white; font-weight: bold; font-size: 1.2rem; }
+.navbar img { width: 40px; height: 40px; border-radius: 50%; }
+.navbar ul { display: flex; gap: 20px; list-style: none; }
+.navbar a { color: white; text-decoration: none; opacity: 0.9; }
+.navbar a:hover, .navbar a.active { opacity: 1; text-decoration: underline; }
+
+/* Layout Dashboard */
+.dashboard-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* Header */
+.dash-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+.dash-header h1 { color: #2e7d32; margin-bottom: 5px; }
+.subtitle { color: #666; font-size: 0.95rem; }
+.date-badge { background: #e8f5e9; color: #2e7d32; padding: 8px 16px; border-radius: 20px; font-weight: 600; font-size: 0.9rem; }
+
+/* KPIs (Cards Superiores) */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+.kpi-card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: transform 0.2s;
+    border-left: 5px solid transparent;
+}
+.kpi-card:hover { transform: translateY(-3px); }
+
+.kpi-card.financeiro { border-left-color: #2e7d32; }
+.kpi-card.capital { border-left-color: #f39c12; }
+.kpi-card.producao { border-left-color: #3498db; }
+
+.kpi-card .icon { font-size: 2.5rem; }
+.kpi-card h3 { font-size: 0.9rem; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
+.kpi-card .valor { font-size: 1.6rem; font-weight: 700; color: #333; margin: 5px 0; }
+.kpi-card small { font-size: 0.85rem; color: #999; }
+
+/* Grid de Conteúdo (Gráfico + Extrato) */
+.content-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* Gráfico maior que o extrato */
+    gap: 25px;
+}
+
+.panel {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    padding: 25px;
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+}
+.panel-header h3 { font-size: 1.1rem; color: #444; }
+.badge { background: #eee; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; color: #666; }
+.link-ver-tudo { color: #2e7d32; text-decoration: none; font-size: 0.85rem; font-weight: 600; }
+
+/* Lista de Transações */
+.transaction-list { list-style: none; }
+.transaction-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #f9f9f9;
+}
+.transaction-list li:last-child { border-bottom: none; }
+
+.trans-desc { font-weight: 500; color: #555; display: block; }
+.trans-date { font-size: 0.8rem; color: #aaa; }
+.trans-value { font-weight: 700; }
+.trans-value.credito { color: #27ae60; }
+.trans-value.debito { color: #e74c3c; }
+
+/* Footer */
+.footer { text-align: center; margin-top: 50px; color: #999; font-size: 0.9rem; padding-bottom: 20px; }
+
+/* Responsivo */
+@media(max-width: 900px) {
+    .content-grid { grid-template-columns: 1fr; }
+}
+.agro-ticker {
+    background-color: #1e272e;
+    color: white;
+    padding: 10px 0;
+    overflow: hidden;
+    white-space: nowrap;
+    border-bottom: 3px solid #f39c12; /* Cor de destaque (trigo/soja) */
+}
+
+.ticker-content {
+    display: flex;
+    justify-content: center; /* Centralizado ou use animation para rolar */
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.ticker-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Consolas', 'Courier New', monospace; /* Fonte técnica */
+    font-size: 0.9rem;
+}
+
+.ticker-item .label { color: #aaa; font-weight: 600; }
+.ticker-item .value { color: #fff; font-weight: 700; }
+
+.change { font-size: 0.8rem; padding: 2px 6px; border-radius: 4px; }
+.change.up { color: #2ecc71; background: rgba(46, 204, 113, 0.1); }
+.change.down { color: #e74c3c; background: rgba(231, 76, 60, 0.1); }
+
+.ticker-item.weather .value { color: #3498db; }
+
+/* Responsivo para mobile */
+@media(max-width: 768px) {
+    .ticker-content {
+        flex-wrap: wrap;
+        gap: 15px;
+        justify-content: flex-start;
+    }
+}
+
+.section-title {
+    margin: 40px 0 20px 0;
+    font-size: 1.3rem;
+    color: #444;
+    border-left: 4px solid #2e7d32;
+    padding-left: 15px;
+}
+
+/* Grid Operacional */
+.operacional-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Dividido ao meio */
+    gap: 25px;
+    margin-bottom: 50px;
+}
+
+/* Botões Pequenos de Ação */
+.btn-small {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    background: #2e7d32;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.btn-small.outline {
+    background: transparent;
+    border: 1px solid #2e7d32;
+    color: #2e7d32;
+}
+
+/* --- WIDGET 1: LOGÍSTICA (Tickets) --- */
+.tickets-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.ticket-card {
+    border: 1px solid #e0e0e0;
+    border-left: 4px solid #aaa; /* Cor padrão */
+    border-radius: 6px;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fdfdfd;
+}
+
+/* Cores de Status */
+.ticket-card.status-AGENDADO { border-left-color: #3498db; }
+.ticket-card.status-CONCLUIDO { border-left-color: #2ecc71; opacity: 0.7; }
+.ticket-card.status-CANCELADO { border-left-color: #e74c3c; }
+
+.ticket-date {
+    text-align: center;
+    padding-right: 15px;
+    border-right: 1px solid #eee;
+    min-width: 60px;
+}
+.ticket-date .day { font-size: 1.2rem; font-weight: bold; display: block; color: #333; }
+.ticket-date .month { font-size: 0.8rem; text-transform: uppercase; color: #777; }
+
+.ticket-info { padding-left: 15px; flex-grow: 1; }
+.ticket-info h4 { margin: 0; font-size: 1rem; color: #333; }
+.ticket-info p { margin: 4px 0 0; font-size: 0.85rem; color: #666; }
+
+.ticket-qr {
+    text-align: right;
+}
+.qr-code { font-size: 1.5rem; color: #333; } /* Ícone simulado */
+
+/* --- WIDGET 2: CADERNO DE CAMPO (Timeline) --- */
+.timeline-container {
+    position: relative;
+    padding-left: 20px;
+}
+
+/* Linha Vertical */
+.timeline-container::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 5px;
+    bottom: 0;
+    width: 2px;
+    background: #e0e0e0;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 25px;
+    padding-left: 20px;
+}
+
+/* Bolinha da Timeline */
+.timeline-dot {
+    position: absolute;
+    left: -20px; /* Alinha com a linha */
+    top: 0;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #fff;
+    border: 3px solid #2e7d32;
+    z-index: 2;
+}
+
+.timeline-content h4 {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #333;
+}
+.timeline-date {
+    font-size: 0.75rem;
+    color: #888;
+    margin-bottom: 5px;
+    display: block;
+}
+.timeline-desc {
+    font-size: 0.9rem;
+    color: #555;
+    background: #f9f9f9;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #eee;
+}
+
+/* Responsividade */
+@media(max-width: 768px) {
+    .operacional-grid { grid-template-columns: 1fr; }
+}
+
+/* MODAIS (Popups) */
+.modal-overlay {
+    display: none; /* Oculto por padrão */
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5); /* Fundo escuro */
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-overlay.active {
+    display: flex; /* Aparece quando tem a classe active */
+}
+
+.modal-box {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 450px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.close-modal {
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #999;
+}
+
+/* Formulários do Modal */
+.form-group { margin-bottom: 15px; }
+.form-row { display: flex; gap: 15px; }
+.form-group label { display: block; margin-bottom: 5px; font-weight: 500; font-size: 0.9rem; }
+.form-group input, .form-group select, .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: inherit;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 12px;
+    background: #2e7d32;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+}
+.btn-submit:hover { background: #1b5e20; }

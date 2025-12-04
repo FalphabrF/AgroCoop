@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Veículo - AgroCoop</title>
+    <!-- [FIX] Caminhos Absolutos: Essencial para funcionar em qualquer rota -->
+    <link rel="stylesheet" href="/css/veiculo.css">
+    <link rel="shortcut icon" type="image/x-icon" href="/img/image.png">
+
+    <!-- Scripts -->
+    <script src="/js/inicial.js" defer></script>
+    <script src="/js/veiculo.js" defer></script>
+</head>
+
+<body>
+    <header class="navbar">
+        <a href="/inicial.html" class="logo">
+            <img src="/img/image.png" alt="Logo AgroCoop" class="logo-img">
+            <span>AgroCoop🌱</span>
+        </a>
+        <nav>
+            <ul>
+                <li><a href="/dashboard.html" class="active">Painel</a></li>
+                <li><a href="/perfil.html">Meu Perfil</a></li>
+                <li><a href="/veiculo.html">Veículos</a></li>
+                <li><a href="/login.html">Sair</a></li>
+            </ul>
+        </nav>
+    </header>
+
+
+
+    <!-- [FIX] id adicionado para facilitar seleção no JS -->
+    <form id="formVeiculo" enctype="multipart/form-data">
+        <h2>Cadastro de Veículos</h2>
+
+        <label>Modelo</label>
+        <input type="text" name="modelo" required placeholder="Ex: Hilux CD">
+
+        <label>Placa</label>
+        <input type="text" name="placa" required placeholder="ABC-1234">
+
+        <label>Marca</label>
+        <input type="text" name="marca" required placeholder="Toyota">
+
+        <label>Ano</label>
+        <input type="number" name="ano" required placeholder="2024">
+
+        <label>Localização</label>
+        <input type="text" name="localizacao" required placeholder="Cidade - UF">
+
+        <label>Valor (R$)</label>
+        <input type="number" name="valor" required placeholder="0.00">
+
+        <label>Quilometragem</label>
+        <input type="number" name="quilometragem" required>
+
+        <label>Opcionais</label>
+        <input type="text" name="opcionais" placeholder="Ar condicionado, Direção...">
+
+        <label>Descrição</label>
+        <textarea name="descricao" rows="4"></textarea>
+
+        <label>Telefone para contato</label>
+        <input type="tel" name="telefone" required placeholder="44999999999">
+
+        <!-- [CRÍTICO] O nome 'fotos' deve bater com upload.array('fotos') no router -->
+        <label>Fotos do veículo</label>
+        <input type="file" name="fotos" multiple accept="image/*">
+
+        <button type="submit">Cadastrar Veículo</button>
+    </form>
+</body>
+
+</html>

@@ -1,0 +1,232 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", sans-serif;
+  background: #f1f8f4;
+  color: #333;
+}
+
+/* =============================== */
+/* NAVBAR SUPERIOR */
+/* =============================== */
+.navbar {
+  background: #2e7d32;
+  color: white;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar .logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: white;
+}
+
+.logo-img {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  object-fit: contain;
+}
+
+.navbar ul {
+  display: flex;
+  list-style: none;
+  gap: 1.5rem;
+}
+
+.navbar ul li a {
+  color: white;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.navbar ul li a:hover {
+  text-decoration: underline;
+}
+
+/* =============================== */
+/* MEGA MENU */
+/* =============================== */
+.mega {
+  background: #ffffff;
+  padding: 0.8rem 2rem;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.menu {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+.menu-item {
+  position: relative;
+}
+
+.menu-item > a {
+  color: #2e7d32;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 8px 0;
+  position: relative;
+}
+
+/* Linha animada */
+.menu-item > a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  height: 2px;
+  width: 0;
+  background: #2e7d32;
+  transition: width 0.3s ease;
+}
+
+.menu-item > a:hover::after {
+  width: 100%;
+}
+
+/* SUBMENU */
+.submenu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: -12px;
+  min-width: 230px;
+  background: #ffffff;
+  border: 1px solid #e6e6e6;
+  border-radius: 10px;
+  padding: 16px 20px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, .08);
+  z-index: 50;
+}
+
+.submenu li {
+  list-style: none;
+}
+
+.submenu a {
+  display: block;
+  padding: 8px 0;
+  color: #2e7d32;
+  text-decoration: none;
+}
+
+.submenu a:hover {
+  text-decoration: underline;
+}
+
+/* Mostrar o submenu (o JS ativa essa classe) */
+.submenu.active {
+  display: block;
+}
+
+/* =============================== */
+/* FORMULÁRIO DE CADASTRO */
+/* =============================== */
+
+form {
+  background: #ffffff;
+  max-width: 520px;
+  margin: 40px auto;
+  padding: 40px 30px;
+  border-radius: 14px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+form h2 {
+  text-align: center;
+  font-size: 1.9rem;
+  font-weight: bold;
+  color: #2e7d32;
+  margin-bottom: 10px;
+}
+
+/* Inputs */
+form input,
+form textarea {
+  padding: 12px;
+  border: 1px solid #cfcfcf;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all .3s ease;
+}
+
+form input:focus,
+form textarea:focus {
+  border-color: #2e7d32;
+  box-shadow: 0 0 6px rgba(46, 125, 50, 0.25);
+  outline: none;
+}
+
+textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* Botão */
+form button {
+  padding: 12px;
+  background: #2e7d32;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 1.15rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: 0.3s ease;
+}
+
+form button:hover {
+  background: #1b5e20;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Animação */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =============================== */
+/* RESPONSIVIDADE */
+/* =============================== */
+
+@media (max-width: 480px) {
+  form {
+    padding: 30px 20px;
+  }
+
+  .menu {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  form h2 {
+    font-size: 1.6rem;
+  }
+}

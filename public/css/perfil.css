@@ -1,0 +1,144 @@
+/* ===== Reset ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", sans-serif;
+  background: #f0f8f0;
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: #2e7d32;
+  color: #fff;
+}
+
+.navbar .logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.navbar .logo img {
+  width: 40px;
+  height: 40px;
+}
+
+.navbar ul {
+  display: flex;
+  list-style: none;
+  gap: 1.5rem;
+}
+
+.navbar ul li a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.navbar ul li a:hover {
+  text-decoration: underline;
+}
+
+/* Main Carteirinha */
+.perfil-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.carteirinha {
+  background: linear-gradient(to bottom, #c7f0c7, #f0fff0);
+  border: 3px solid #2e7d32;
+  border-radius: 20px;
+  width: 1080px;
+  height: 260px;
+  padding: 1rem;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.carteirinha-topo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border-bottom: 2px solid #2e7d32;
+  padding-bottom: 1rem;
+}
+
+.carteirinha-topo img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid #388e3c;
+  object-fit: cover;
+}
+
+.cooperado-info h2 {
+  color: #2e7d32;
+  margin-bottom: 5px;
+}
+
+.cooperado-info p {
+  font-size: 0.9rem;
+  margin: 2px 0;
+}
+
+/* Produtos e Serviços */
+.carteirinha-bottomo {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+  gap: 1rem;
+}
+
+.lista-produtos-servicos {
+  flex: 1;
+}
+
+.lista-produtos-servicos h3 {
+  text-align: center;
+  color: #2e7d32;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid #2e7d32;
+}
+
+.lista-produtos-servicos ul {
+  list-style: none;
+  padding: 0.5rem;
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+.lista-produtos-servicos li {
+  padding: 4px 0;
+  text-align: center;
+  background: #e0ffe0;
+  margin-bottom: 4px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+/* Footer */
+.footer {
+  background: #2e7d32;
+  color: #fff;
+  text-align: center;
+  padding: 1rem;
+  width: 100%;
+  margin-top: auto;
+}

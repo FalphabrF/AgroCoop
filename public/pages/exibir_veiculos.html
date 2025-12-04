@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Veículos Disponíveis - AgroCoop</title>
+  <!-- [FIX] Caminhos Absolutos -->
+  <link rel="stylesheet" href="/css/exibir_veiculos.css">
+  <script src="/js/inicial.js" defer></script>
+
+  <link rel="shortcut icon" href="/img/image.png">
+</head>
+
+<body>
+
+  <header class="navbar">
+    <a href="/inicial.html" class="logo">
+      <img src="/img/image.png" alt="Logo AgroCoop" class="logo-img">
+      <span>AgroCoop🌱</span>
+    </a>
+    <nav>
+      <ul>
+        <li><a href="/cadastro.html">Seja Cooperado</a></li>
+        <li><a href="/login.html">Entrar</a></li>
+      </ul>
+    </nav>
+  </header>
+  <nav class="mega">
+    <ul class="menu">
+      <li class="menu-item"> <a href="#" class="menu-trigger">Contato</a>
+        <ul class="submenu">
+          <li><a href="/forum.html">Fale Conosco</a></li>
+        </ul>
+      </li>
+      <li class="menu-item"> <a href="#" class="menu-trigger">Trabalhe na AgroCoop</a>
+        <ul class="submenu">
+          <li><a href="/cadastro.html">Seja um Colaborador</a></li>
+          <li><a href="/vantagens.html">Vantagens De Se Tornar Um Cooperado</a></li>
+
+
+        </ul>
+      </li>
+      <li class="menu-item"> <a href="#" class="menu-trigger">Fornecedores</a>
+        <ul class="submenu">
+          <li><a href="/cooperados.html">Melhores Fornecedores</a></li>
+        </ul>
+      </li>
+      <li class="menu-item"> <a href="#" class="menu-trigger">Produtos & Serviços</a>
+        <ul class="submenu">
+          <li><a href="/aviacao-agricola.html">Aviação-agricola</a></li>
+          <li><a href="/credito-rural.html">credito-rural</a></li>
+          <li><a href="/exibir_veiculos.html">Veículos</a></li>
+
+          <li><a href="../">Sem Criatividade</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+
+  <main class="container">
+    <h1>Veículos disponíveis</h1>
+    <div id="lista-veiculos" class="grid">
+      <!-- O JS vai preencher isso aqui -->
+      <p style="text-align:center; color:#666">Carregando estoque...</p>
+    </div>
+  </main>
+
+  <!-- [FIX] Script com caminho absoluto -->
+  <script src="/js/exibir_veiculos.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do Cooperado - AgroCoop</title>
+
+    <!-- CSS Específico do Dashboard + Reset/Base -->
+    <link rel="stylesheet" href="/css/dashboard.css">
+    
+    <!-- Dependências -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/js/dashboard.js" defer></script>
+    
+    <link rel="shortcut icon" href="/img/image.png" type="image/x-icon">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <a href="/dashboard.html" class="logo">
+            <img src="/img/image.png" alt="Logo AgroCoop">
+            <span>AgroCoop🌱</span>
+        </a>
+        <nav>
+            <ul>
+                <li><a href="/dashboard.html" class="active">Painel</a></li>
+                <li><a href="/perfil.html">Meu Perfil</a></li>
+                <li><a href="/veiculo.html">Veículos</a></li>
+                <li><a href="/login.html">Sair</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Barra de Cotações -->
+    <div class="agro-ticker">
+        <div class="ticker-content">
+            <div class="ticker-item">
+                <span class="label">SOJA (sc 60kg)</span>
+                <span class="value">R$ 134,50</span>
+                <span class="change up">▲ 0.45%</span>
+            </div>
+            <div class="ticker-item">
+                <span class="label">MILHO (sc 60kg)</span>
+                <span class="value">R$ 58,20</span>
+                <span class="change down">▼ -1.20%</span>
+            </div>
+            <div class="ticker-item">
+                <span class="label">DÓLAR</span>
+                <span class="value">R$ 5,42</span>
+                <span class="change up">▲ 0.10%</span>
+            </div>
+            <div class="ticker-item weather">
+                <span class="icon">🌦️</span>
+                <span class="label">Carambeí - PR</span>
+                <span class="value">22°C • 12mm</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Conteúdo Principal -->
+    <main class="dashboard-container">
+        
+        <!-- Cabeçalho -->
+        <div class="dash-header">
+            <div>
+                <h1 id="welcome-msg">Bem-vindo, Cooperado</h1>
+                <p class="subtitle">Resumo financeiro e produtivo da sua conta</p>
+            </div>
+            <div class="date-badge" id="data-hoje">--/--/----</div>
+        </div>
+
+        <!-- KPI CARDS (Indicadores) -->
+        <div class="kpi-grid">
+            <div class="kpi-card financeiro">
+                <div class="icon">💰</div>
+                <div class="info">
+                    <h3>Saldo Disponível</h3>
+                    <p class="valor" id="saldo-conta">R$ ---</p>
+                    <small>Conta Corrente</small>
+                </div>
+            </div>
+
+            <div class="kpi-card capital">
+                <div class="icon">📈</div>
+                <div class="info">
+                    <h3>Cota Capital</h3>
+                    <p class="valor" id="cota-capital">R$ ---</p>
+                    <small>Participação Acumulada</small>
+                </div>
+            </div>
+
+            <div class="kpi-card producao">
+                <div class="icon">🚜</div>
+                <div class="info">
+                    <h3>Última Produção</h3>
+                    <p class="valor" id="ultima-producao">---</p>
+                    <small id="detalhe-producao">Sem dados recentes</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-grid">
+
+            <!-- SECÇÃO: OPERACIONAL (Logística e Campo) -->
+            <div class="operacional-grid">
+
+                <!-- Painel de Logística (Agendamentos) -->
+                <div class="panel logistica-box">
+                    <div class="panel-header">
+                        <h3>📅 Agenda de Entregas</h3>
+                        <button id="btn-open-agendamento" class="btn-small">Novo Agendamento</button>
+                    </div>
+                    <div class="tickets-container" id="lista-agendamentos">
+                        <!-- O JS vai preencher isto -->
+                        <p class="loading-text">A carregar agenda...</p>
+                    </div>
+                </div>
+
+                <!-- Painel Caderno de Campo (Timeline) -->
+                <div class="panel campo-box">
+                    <div class="panel-header">
+                        <h3>🌾 Caderno de Campo Digital</h3>
+                        <button id="btn-open-atividade" class="btn-small outline">Registrar</button>
+                    </div>
+                    <div class="timeline-container" id="lista-atividades">
+                        <!-- O JS vai preencher isto -->
+                        <p class="loading-text">A carregar histórico...</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Gráfico -->
+            <div class="panel chart-box">
+                <div class="panel-header">
+                    <h3>Histórico de Produção</h3>
+                    <span class="badge">Últimos 6 lançamentos</span>
+                </div>
+                <div class="chart-container">
+                    <canvas id="productionChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Extrato Recente -->
+            <div class="panel extrato-box">
+                <div class="panel-header">
+                    <h3>Movimentações Recentes</h3>
+                    <!-- BOTÃO FINANCEIRO -->
+                    <button id="btn-open-financeiro" class="btn-small outline">Nova Movimentação</button>
+                </div>
+                <ul id="lista-movimentacoes" class="transaction-list">
+                    <li class="loading-item">Carregando dados...</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 AgroCoop - Tecnologia para o Campo</p>
+    </footer>
+
+    <!-- ================= MODAIS ================= -->
+
+    <!-- MODAL 1: NOVO AGENDAMENTO -->
+    <div id="modal-agendamento" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Novo Agendamento de Safra</h3>
+                <span class="close-modal" data-target="modal-agendamento">&times;</span>
+            </div>
+            <form id="form-agendamento">
+                <div class="form-group">
+                    <label>Unidade de Recebimento</label>
+                    <select id="ag-armazem" required>
+                        <!-- UUIDs reais do banco -->
+                        <option value="b0cc8a35-bbd6-4a54-9cc0-b81e5b1d51ed">Unidade Central - Grãos</option>
+                        <option value="7f98f131-c0a0-4be2-92e8-2fcfa6ff481b">Unidade Leiteira Norte</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Data</label>
+                        <input type="date" id="ag-data" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Horário</label>
+                        <select id="ag-hora" required>
+                            <option value="8">08:00</option>
+                            <option value="9">09:00</option>
+                            <option value="10">10:00</option>
+                            <option value="14">14:00</option>
+                            <option value="15">15:00</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn-submit">Confirmar Agendamento</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 2: REGISTRO DE CAMPO -->
+    <div id="modal-atividade" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Registrar Atividade</h3>
+                <span class="close-modal" data-target="modal-atividade">&times;</span>
+            </div>
+            <form id="form-atividade">
+                <div class="form-group">
+                    <label>Tipo de Atividade</label>
+                    <select id="at-tipo" required>
+                        <option value="PLANTIO">Plantio</option>
+                        <option value="PULVERIZACAO">Pulverização</option>
+                        <option value="COLHEITA">Colheita</option>
+                        <option value="ADUBACAO">Adubação</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Data</label>
+                        <input type="date" id="at-data" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Talhão</label>
+                        <input type="text" id="at-talhao" placeholder="Ex: T-05" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Descrição / Observações</label>
+                    <textarea id="at-desc" rows="3" placeholder="Detalhes da operação..."></textarea>
+                </div>
+                <button type="submit" class="btn-submit">Salvar Registro</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 3: MOVIMENTAÇÃO FINANCEIRA -->
+    <div id="modal-financeiro" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Registrar Movimentação</h3>
+                <span class="close-modal" data-target="modal-financeiro">&times;</span>
+            </div>
+            <form id="form-financeiro">
+                <div class="form-group">
+                    <label>Tipo de Operação</label>
+                    <select id="fin-tipo" required>
+                        <option value="DEBITO">🔴 Débito (Saída/Pagamento)</option>
+                        <option value="CREDITO">🟢 Crédito (Entrada/Venda)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <input type="text" id="fin-desc" placeholder="Ex: Venda de Leite, Compra de Adubo..." required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Valor (R$)</label>
+                        <input type="number" id="fin-valor" step="0.01" min="0.01" placeholder="0,00" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Data</label>
+                        <input type="date" id="fin-data" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn-submit">Confirmar Lançamento</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

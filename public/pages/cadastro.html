@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - AgroCoop</title>
+    <link rel="stylesheet" href="../css/cadastro.css">
+    <script src="../js/cadastro.js" defer></script>
+    <link rel="shortcut icon" type="image/x-icon" href="../img/image.png">
+</head>
+
+<body>
+
+    <!-- ADICIONEI: id="formCadastro" e REMOVI o action -->
+    <form id="formCadastro" enctype="multipart/form-data">
+        <h2>Cadastro de Cooperado</h2>
+
+        <input type="text" name="nome_completo" placeholder="Nome completo" required /><br><br>
+
+        <input type="text" name="cpf" placeholder="CPF" required /><br><br>
+
+        <input type="text" name="numero_registro" placeholder="Número do Registro" required /><br><br>
+
+        <input type="date" name="data_nascimento" required /><br><br>
+
+        <input type="text" name="telefone" placeholder="Telefone" required /><br><br>
+
+        <input type="text" name="endereco" placeholder="Endereço" required /><br><br>
+
+        <input type="text" name="cidade" placeholder="Cidade" required /><br><br>
+
+        <input type="text" name="estado" placeholder="Estado (ex: RO)" maxlength="2" required /><br><br>
+
+        <input type="password" name="senha" placeholder="Senha" required /><br><br>
+
+        <select name="tipo_cooperado" required>
+            <option value="">Tipo de cooperado</option>
+            <option value="associado">Associado</option>
+            <option value="pescador">vendedor</option>
+            <option value="produtor">Produtor</option>
+            <option value="fornecedor">Fornecedor</option>
+        </select><br><br>
+
+        <input type="email" name="email" placeholder="Email" /><br><br>
+
+        <input type="file" name="foto" accept="image/*" /><br><br>
+
+        <button type="submit">Cadastrar</button>
+        
+    </form>
+    
+
+</body>
+</html>
