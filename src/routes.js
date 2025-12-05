@@ -7,7 +7,7 @@ import {
   getAllUsers,
   getUserById,
   getProfile
-} from './controllers/UserController.js'
+} from './controllers/userController.js'
 
 import upload from './config/multer.js'
 import LoginController from './controllers/LoginController.js'
