@@ -7,8 +7,8 @@ import Sequelize from 'sequelize';
 import config from './config/database.js';
 
 // --- IMPORTS DOS MODELS ---
-// [FIX] Padronizado para PascalCase (Cooperado.js) para evitar erro de Case Sensitive
-import Cooperado from './models/cooperado.js';
+// [FIX] Padronizado para PascalCase para evitar erros em sistemas Case-Sensitive (Linux/Render)
+import Cooperado from './models/Cooperado.js';
 import Veiculo from './models/Veiculo.js';
 import Producao from './models/Producao.js';
 import Financeiro from './models/Financeiro.js';
@@ -40,21 +40,33 @@ app.use(express.static(path.join(__dirname, '../public/pages')));
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // ----------------------------------------------------------------
-// ROTAS
+// [FIX CRÍTICO] ROTA RAIZ (LOGIN)
 // ----------------------------------------------------------------
-app.use(userRoutes);
-
-// Rota de Fallback (Redireciona raiz para login)
+// Deve vir ANTES das rotas da API para não ser bloqueada pelo Auth Middleware
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/pages/login.html'));
 });
 
 // ----------------------------------------------------------------
+// ROTAS DA API (Protegidas)
+// ----------------------------------------------------------------
+app.use(userRoutes);
+
+// ----------------------------------------------------------------
 // BANCO DE DADOS (SEQUELIZE)
 // ----------------------------------------------------------------
+// Lógica Híbrida: Usa DATABASE_URL com SSL no Render, ou config local no Windows
 const sequelize = process.env.DATABASE_URL 
-    ? new Sequelize(process.env.DATABASE_URL, config) // Produção
-    : new Sequelize(config); // Local
+    ? new Sequelize(process.env.DATABASE_URL, {
+        dialect: 'postgres',
+        dialectOptions: {
+            ssl: {
+                require: true,
+                rejectUnauthorized: false
+            }
+        }
+      })
+    : new Sequelize(config);
 
 // 1. Inicializar Models
 Cooperado.init(sequelize);
@@ -66,8 +78,7 @@ Agendamento.init(sequelize);
 AtividadeCampo.init(sequelize);
 
 // 2. Definir Associações (Relacionamentos)
-// [CRÍTICO] Definimos 'foreignKey' explicitamente para evitar que o Sequelize
-// crie colunas snake_case (ex: cooperado_id) que não existem no banco.
+// [CRÍTICO] Forçamos 'foreignKey' explicitamente para evitar erros de snake_case no Postgres
 
 // Cooperado <-> Veículo
 Cooperado.hasMany(Veiculo, { foreignKey: 'cooperadoId' });
@@ -78,41 +89,4 @@ Cooperado.hasMany(Producao, { foreignKey: 'cooperadoId' });
 Producao.belongsTo(Cooperado, { foreignKey: 'cooperadoId' });
 
 // Cooperado <-> Financeiro
-Cooperado.hasMany(Financeiro, { foreignKey: 'cooperadoId' });
-Financeiro.belongsTo(Cooperado, { foreignKey: 'cooperadoId' });
-
-// Cooperado <-> Agendamento (Logística)
-Cooperado.hasMany(Agendamento, { foreignKey: 'cooperadoId' });
-Agendamento.belongsTo(Cooperado, { foreignKey: 'cooperadoId' });
-
-// Armazém <-> Agendamento
-Armazem.hasMany(Agendamento, { foreignKey: 'armazemId' });
-Agendamento.belongsTo(Armazem, { foreignKey: 'armazemId' });
-
-// Cooperado <-> Atividade de Campo
-Cooperado.hasMany(AtividadeCampo, { foreignKey: 'cooperadoId' });
-AtividadeCampo.belongsTo(Cooperado, { foreignKey: 'cooperadoId' });
-
-// ----------------------------------------------------------------
-// INICIALIZAÇÃO DO SERVIDOR
-// ----------------------------------------------------------------
-sequelize.authenticate()
-  .then(() => {
-    console.log('✅ Banco conectado com sucesso!');
-    console.log('📂 Servindo arquivos de: public/ e public/pages/');
-    
-    app.listen(3000, () => {
-        console.log('🚀 Servidor ON em http://localhost:3000');
-    });
-  })
-  .catch(err => {
-    console.error('❌ Erro fatal ao conectar no banco:', err);
-  });
-
-// Middleware de Erro Global
-app.use((err, req, res, next) => {
-  console.error(err);
-  res.status(500).json({ error: "Erro interno do servidor" });
-});
-
-export default app;
+Cooperado.hasMany(Financeiro, { foreign
