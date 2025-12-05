@@ -19,6 +19,12 @@ if (process.env.DATABASE_URL) {
     console.log("🌍 Detectado ambiente de Produção (Render). Usando DATABASE_URL.");
     sequelize = new Sequelize(process.env.DATABASE_URL, {
         dialect: 'postgres',
+        // [CORREÇÃO CRÍTICA] Forçar o Sequelize a usar snake_case (created_at) em vez de camelCase
+        define: {
+            timestamps: true,
+            underscored: true,
+            underscoredAll: true
+        },
         dialectOptions: {
             ssl: {
                 require: true,
