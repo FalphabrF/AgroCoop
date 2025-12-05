@@ -1,83 +1,94 @@
-const container = document.getElementById("lista-veiculos")
+document.addEventListener("DOMContentLoaded", async () => {
+    const container = document.getElementById("lista-veiculos");
 
-async function carregarVeiculos() {
-  try {
-    // [FIX] Caminho relativo para a API (mais seguro que http://localhost:3000)
-    const res = await fetch("/usuarios/veiculos")
-    const veiculos = await res.json()
+    // [MODIFICAÇÃO] Tornamos a página PÚBLICA (Vitrine)
+    // Removemos a verificação que expulsa o usuário se não tiver token.
+    // O token é opcional aqui (apenas se quisermos personalizar algo no futuro).
+    const token = localStorage.getItem("token");
 
-    // Validação robusta de resposta
-    if (!Array.isArray(veiculos)) {
-      container.innerHTML = "<p>Erro ao carregar lista de veículos.</p>"
-      console.error("Resposta da API não é um array:", veiculos)
-      return
+    async function carregarVeiculos() {
+        try {
+            // Configuração dos Headers
+            // Se tiver token, enviamos (bom para auditoria), mas não é obrigatório
+            const headers = {};
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+
+            // [FIX] Fetch na rota pública
+            const res = await fetch("/usuarios/veiculos", {
+                method: "GET",
+                headers: headers
+            });
+
+            // Se der 401 aqui, é erro de configuração no Backend (rota não está pública)
+            if (res.status === 401) {
+                console.warn("A rota /usuarios/veiculos ainda está protegida no backend.");
+                // Não redirecionamos mais, apenas logamos ou mostramos erro
+            }
+
+            const veiculos = await res.json();
+
+            // Validação de Resposta
+            if (!Array.isArray(veiculos)) {
+                container.innerHTML = "<p style='text-align:center; padding:20px'>Erro ao carregar lista de veículos.</p>";
+                console.error("Resposta da API inválida:", veiculos);
+                return;
+            }
+
+            if (veiculos.length === 0) {
+                container.innerHTML = "<p style='text-align:center; padding:20px'>Nenhum veículo disponível no momento.</p>";
+                return;
+            }
+
+            container.innerHTML = "";
+
+            veiculos.forEach(v => {
+                // Lógica de Imagem com Fallback
+                const nomeArquivo = v.foto_principal; 
+                const imagemSrc = nomeArquivo ? `/uploads/${nomeArquivo}` : "/img/sem-foto.jpg";
+
+                // Formatação de Preço
+                const preco = Number(v.valor).toLocaleString("pt-BR", { style: 'currency', currency: 'BRL' });
+
+                // Tratamento de segurança para campos vazios
+                const modelo = v.modelo || "Modelo não informado";
+                const marca = v.marca || "";
+
+                // Link para contato (WhatsApp)
+                // Se o usuário não estiver logado, o link continua funcionando pois é externo
+                const linkZap = v.telefone ? `https://wa.me/55${v.telefone}` : "#";
+
+                container.innerHTML += `
+                <div class="card">
+                    <div class="card-image-container">
+                        <img src="${imagemSrc}" alt="${modelo}" onerror="this.onerror=null;this.src='/img/sem-foto.jpg';">
+                    </div>
+                    <div class="card-content">
+                        <h3>${modelo} <small>(${marca})</small></h3>
+                        
+                        <div class="card-details">
+                            <p><span>Placa:</span> ${v.placa ? '***' + v.placa.slice(-2) : '***'}</p> <!-- Ocultar placa parcial em vitrine pública é boa prática -->
+                            <p><span>Ano:</span> ${v.ano || '---'}</p>
+                            <p><span>KM:</span> ${v.quilometragem} km</p>
+                            <p><span>Local:</span> ${v.localizacao || '---'}</p>
+                        </div>
+                        
+                        <p class="price">${preco}</p>
+                        
+                        <a href="${linkZap}" target="_blank" class="btn-whatsapp">
+                            Tenho Interesse
+                        </a>
+                    </div>
+                </div>
+                `;
+            });
+
+        } catch (err) {
+            console.error("Erro fatal:", err);
+            container.innerHTML = "<p style='text-align:center; color:red'>Falha de conexão com o servidor.</p>";
+        }
     }
 
-    if (veiculos.length === 0) {
-      container.innerHTML = "<p>Nenhum veículo cadastrado no momento.</p>"
-      return
-    }
-
-    container.innerHTML = ""
-
-    veiculos.forEach(v => {
-      // [DIAGNÓSTICO EXPERT - CRUCIAL] 
-      // Abra o console do navegador (F12) e verifique este objeto 'v'.
-      // Se 'foto_principal' (ou o campo que você usa) estiver null/undefined,
-      // o problema NÃO é aqui, é no seu Controller (backend) que não salvou o nome da imagem no banco.
-      console.log("Veículo carregado:", v);
-
-      // Lógica de recuperação da imagem:
-      // 1. Tenta pegar de 'foto_principal'
-      // 2. Se não tiver, tenta 'foto' (caso o nome da coluna tenha mudado)
-      // 3. Se for um array 'fotos', pega a primeira
-      const nomeArquivoImagem = v.foto_principal || v.foto || (v.fotos ? v.fotos[0] : null);
-
-      // Monta o caminho absoluto. Se não tiver nome de arquivo, usa o placeholder.
-      const imagem = nomeArquivoImagem 
-        ? `/uploads/${nomeArquivoImagem}` 
-        : "/img/sem-foto.jpg"
-
-      // Formatação de moeda segura (R$)
-      const preco = v.valor 
-        ? Number(v.valor).toLocaleString("pt-BR", { style: 'currency', currency: 'BRL' }) 
-        : 'R$ 0,00';
-
-      // Tratamento de segurança para o HTML
-      const modelo = v.modelo || "Modelo não informado";
-      const marca = v.marca || "";
-
-      container.innerHTML += `
-      <div class="card">
-        <div class="card-image-container">
-            <!-- onerror: Se a imagem falhar (ex: 404), substitui pelo placeholder automaticamente -->
-            <img src="${imagem}" alt="${modelo}" onerror="this.onerror=null;this.src='/img/sem-foto.jpg';">
-        </div>
-        <div class="card-content">
-            <h3>${modelo} <small>(${marca})</small></h3>
-            
-            <div class="card-details">
-                <p><span>Placa:</span> ${v.placa || '---'}</p>
-                <p><span>Ano:</span> ${v.ano || '---'}</p>
-                <p><span>KM:</span> ${v.quilometragem} km</p>
-                <p><span>Local:</span> ${v.localizacao || '---'}</p>
-            </div>
-            
-            <p class="price">${preco}</p>
-            
-            <a href="https://wa.me/55${v.telefone}" target="_blank" class="btn-whatsapp">
-                Entrar em contato
-            </a>
-        </div>
-      </div>
-      `
-    })
-
-  } catch (err) {
-    console.error("Erro fatal ao processar veículos:", err)
-    container.innerHTML = "<p>Falha de conexão com o servidor.</p>"
-  }
-}
-
-// Inicia o carregamento assim que o script roda
-carregarVeiculos()
+    carregarVeiculos();
+});

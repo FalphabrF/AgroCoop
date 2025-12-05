@@ -2,7 +2,15 @@ document.addEventListener("DOMContentLoaded", () => {
     // Tenta pegar pelo ID específico primeiro, depois fallback para tag genérica
     const form = document.getElementById("formVeiculo") || document.querySelector("form");
 
-    // Validação de segurança: se o script rodar numa página sem form, não quebra o site com erro no console
+    // Validação de Sessão (Crítica para o Backend aceitar a requisição)
+    const token = localStorage.getItem("token");
+    if (!token) {
+        alert("Você precisa estar logado para cadastrar veículos.");
+        window.location.href = "/login.html";
+        return;
+    }
+
+    // Validação de segurança do elemento
     if (!form) {
         console.warn("Script veiculo.js carregado, mas nenhum <form> foi encontrado.");
         return;
@@ -11,7 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        // Feedback visual e travamento do botão para evitar duplo envio (impaciência do usuário)
         const btn = form.querySelector("button[type='submit']");
         const textoOriginal = btn ? btn.innerText : "Enviar";
         
@@ -23,14 +30,17 @@ document.addEventListener("DOMContentLoaded", () => {
         const formData = new FormData(form);
 
         try {
-            // [FIX] Caminho relativo para a API.
-            // Removemos 'http://localhost:3000' para evitar problemas de CORS/Porta.
             const res = await fetch("/usuarios/veiculos", {
                 method: "POST",
+                headers: {
+                    // [SEGURANÇA] Mantive o Token aqui. Sem isso, o backend recusa (401).
+                    // Não definimos Content-Type pois o navegador define multipart/form-data automaticamente com o boundary.
+                    'Authorization': `Bearer ${token}`
+                },
                 body: formData
             });
 
-            // Tenta parsear JSON, mas se falhar (ex: erro 500 html do servidor), trata como texto para debug
+            // Tenta parsear JSON, mas se falhar trata como texto
             let data;
             const text = await res.text();
             try {
@@ -40,22 +50,24 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             if (!res.ok) {
-                // Lança erro com a mensagem que veio do servidor
+                if (res.status === 401) {
+                    alert("Sessão expirada. Faça login novamente.");
+                    window.location.href = "/login.html";
+                    return;
+                }
                 throw new Error(data.erro || data.detalhes || "Erro desconhecido ao cadastrar");
             }
 
             alert("✅ Veículo cadastrado com sucesso!");
             form.reset();
             
-            // [FIX] Redirecionamento correto.
-            // Certifique-se que o arquivo existe em 'public/pages/exibir-veiculos.html'
+            // [ATUALIZAÇÃO] Redirecionamento para o Dashboard conforme solicitado
             window.location.href = "/dashboard.html";
 
         } catch (err) {
             console.error("Erro no envio:", err);
             alert("❌ Falha: " + err.message);
         } finally {
-            // Restaura o botão independente de sucesso ou erro (bloco finally)
             if (btn) {
                 btn.disabled = false;
                 btn.innerText = textoOriginal;

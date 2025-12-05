@@ -6,7 +6,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     // [DIAGNÓSTICO] Se o token estiver inválido, avisa antes de expulsar
     if (!token || token === "undefined" || token === "null") {
         console.warn("Token inválido encontrado:", token);
-        alert("Erro de Sessão: O Login não gerou um token válido.\nVerifique se o seu LoginController.js está retornando 'token'.");
+        // Alert opcional, bom para dev
+        // alert("Sessão inválida. Faça login novamente.");
         
         localStorage.clear(); 
         window.location.href = "/login.html";
@@ -32,11 +33,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // 3. Inicializar Interatividade (Modais e Botões)
     setupModals();
+    
+    // Carregar lista de armazéns dinamicamente (Logística)
+    if(typeof carregarArmazensNoSelect === 'function') carregarArmazensNoSelect();
 
     // 4. Busca de Dados na API (BFF)
     try {
         console.log("Fetching dashboard data...");
         
+        // [FIX] Rota sem ID na URL (quem define o usuário é o Token)
         const res = await fetch(`/usuarios/dashboard`, { 
              headers: {
                 'Authorization': `Bearer ${token}` 
@@ -50,8 +55,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         } 
         
         if (res.status === 404) {
-            console.error("Erro 404: Rota não encontrada. Verifique se o arquivo src/routes.js removeu o '/:id' da rota dashboard.");
-            // Não expulsa o usuário, apenas loga o erro de desenvolvimento
+            console.error("Erro 404: Rota não encontrada.");
             throw new Error("Erro de Configuração: Rota do Backend não encontrada.");
         }
 
@@ -93,10 +97,12 @@ function setupModals() {
     const modalAg = document.getElementById("modal-agendamento");
     const modalAt = document.getElementById("modal-atividade");
     const modalFin = document.getElementById("modal-financeiro");
+    const modalProd = document.getElementById("modal-producao");
 
     const btnAg = document.getElementById("btn-open-agendamento");
     const btnAt = document.getElementById("btn-open-atividade");
     const btnFin = document.getElementById("btn-open-financeiro");
+    const btnProd = document.getElementById("btn-open-producao");
     
     // Fechar
     document.querySelectorAll(".close-modal").forEach(span => {
@@ -104,6 +110,7 @@ function setupModals() {
             if(modalAg) modalAg.classList.remove("active");
             if(modalAt) modalAt.classList.remove("active");
             if(modalFin) modalFin.classList.remove("active");
+            if(modalProd) modalProd.classList.remove("active");
         };
     });
 
@@ -111,6 +118,7 @@ function setupModals() {
     if(btnAg && modalAg) btnAg.onclick = () => modalAg.classList.add("active");
     if(btnAt && modalAt) btnAt.onclick = () => modalAt.classList.add("active");
     if(btnFin && modalFin) btnFin.onclick = () => modalFin.classList.add("active");
+    if(btnProd && modalProd) btnProd.onclick = () => modalProd.classList.add("active");
 
     // --- ENVIOS ---
 
@@ -158,6 +166,21 @@ function setupModals() {
             await enviarDados('/financeiro/lancamento', payload, modalFin);
         });
     }
+
+    const formProd = document.getElementById("form-producao");
+    if(formProd) {
+        formProd.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const payload = {
+                cooperadoId: userId,
+                tipo: document.getElementById("prod-tipo").value,
+                quantidade: document.getElementById("prod-qtd").value,
+                data: document.getElementById("prod-data").value,
+                qualidade: document.getElementById("prod-qualidade").value
+            };
+            await enviarDados('/producao/registro', payload, modalProd);
+        });
+    }
 }
 
 // Função Genérica de Envio (AJAX) - BLINDADA CONTRA 401
@@ -165,13 +188,12 @@ async function enviarDados(endpoint, payload, modalElement) {
     try {
         const token = localStorage.getItem("token"); // Pega o token atual
 
-        // Validação extra para tokens corrompidos ("undefined" string)
+        // Validação extra para tokens corrompidos
         if (!token || token === "undefined" || token === "null") {
             handleSessionExpired();
             return;
         }
 
-        // Busca o botão de forma segura
         const btn = modalElement.querySelector("button[type='submit']");
         if (btn) {
             btn.innerText = "Salvando...";
@@ -182,12 +204,12 @@ async function enviarDados(endpoint, payload, modalElement) {
             method: 'POST',
             headers: { 
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}` // [CRÍTICO] A chave mestra
+                'Authorization': `Bearer ${token}` // A chave mestra
             },
             body: JSON.stringify(payload)
         });
 
-        // [FIX] Tratamento específico para Token Inválido/Expirado
+        // Tratamento específico para Token Inválido/Expirado
         if (res.status === 401) {
             handleSessionExpired();
             return;
@@ -214,8 +236,34 @@ async function enviarDados(endpoint, payload, modalElement) {
     }
 }
 
+// Função para buscar armazéns (Logística)
+async function carregarArmazensNoSelect() {
+    try {
+        const token = localStorage.getItem("token");
+        const select = document.getElementById("ag-armazem");
+        if (!select) return;
+
+        const res = await fetch('/operacional/armazens', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (res.ok) {
+            const armazens = await res.json();
+            select.innerHTML = '<option value="" disabled selected>Selecione a Unidade...</option>';
+            armazens.forEach(a => {
+                const option = document.createElement("option");
+                option.value = a.id; 
+                option.textContent = a.nome;
+                select.appendChild(option);
+            });
+        }
+    } catch (error) {
+        console.error("Erro ao carregar armazéns:", error);
+    }
+}
+
 // ============================================================
-// LÓGICA DE RENDERIZAÇÃO (VIEWS) - MANTIDA IGUAL
+// LÓGICA DE RENDERIZAÇÃO (VIEWS)
 // ============================================================
 
 function renderFinanceiro(fin) {

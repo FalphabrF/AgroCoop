@@ -1,74 +1,52 @@
-import { Model, DataTypes } from 'sequelize'
+import { Model, DataTypes } from 'sequelize';
 
-export default class Veiculo extends Model {
+class Veiculo extends Model {
   static init(sequelize) {
     super.init({
-
       id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true
       },
-
-      modelo: {
-        type: DataTypes.STRING,
-        allowNull: false
-      },
-
-      placa: {
-        type: DataTypes.STRING,
+      cooperadoId: {
+        type: DataTypes.UUID,
         allowNull: false,
-        unique: true
+        field: 'cooperadoId', // Mantemos camelCase na coluna ou mudamos para snake_case se preferir
+        references: {
+          model: 'cooperados', // [ATENÇÃO] Se mudou veiculos, provavelmente cooperados também é minúsculo?
+          key: 'id'
+        }
       },
-
-      marca: {
+      modelo: DataTypes.STRING,
+      placa: DataTypes.STRING,
+      marca: DataTypes.STRING,
+      ano: DataTypes.INTEGER,
+      localizacao: DataTypes.STRING,
+      valor: DataTypes.DECIMAL(10, 2),
+      quilometragem: DataTypes.INTEGER,
+      opcionais: DataTypes.STRING,
+      descricao: DataTypes.TEXT,
+      telefone: DataTypes.STRING,
+      foto_principal: {
         type: DataTypes.STRING,
-        allowNull: false
-      },
-
-      ano: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-      },
-
-      localizacao: {
-        type: DataTypes.STRING,
-        allowNull: false
-      },
-
-      valor: {
-        type: DataTypes.DECIMAL(10,2),
-        allowNull: false
-      },
-
-      quilometragem: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-      },
-
-      opcionais: {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
-
-      descricao: {
-        type: DataTypes.TEXT,
-        allowNull: true
-      },
-
-      telefone: {
-        type: DataTypes.STRING,
-        allowNull: false
-      },
-
-      fotos: {
-        type: DataTypes.ARRAY(DataTypes.STRING),
-        allowNull: true
+        field: 'foto_principal'
       }
-
     }, {
       sequelize,
-      tableName: 'veiculos'
-    })
+      // [FIX] Respeitando sua decisão: Tabela em minúsculo
+      tableName: 'veiculos', 
+      freezeTableName: true, // Impede o Sequelize de tentar pluralizar ou alterar o nome
+      timestamps: true,
+      
+      // [CORREÇÃO DO ERRO ATUAL]
+      // O Sequelize busca 'createdAt' por padrão, mas sua migration criou 'created_at'.
+      // Mapeamos a propriedade do JS para a coluna real do banco aqui:
+      createdAt: 'created_at',
+      updatedAt: 'updated_at',
+      
+      underscored: false // Mantemos false pois seus outros campos (cooperadoId) não são underscored
+    });
   }
 }
+
+export default Veiculo;

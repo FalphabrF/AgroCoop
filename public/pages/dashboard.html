@@ -8,11 +8,11 @@
 
     <!-- CSS Específico do Dashboard + Reset/Base -->
     <link rel="stylesheet" href="/css/dashboard.css">
-    
+
     <!-- Dependências -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/js/dashboard.js" defer></script>
-    
+
     <link rel="shortcut icon" href="/img/image.png" type="image/x-icon">
 </head>
 
@@ -61,7 +61,7 @@
 
     <!-- Conteúdo Principal -->
     <main class="dashboard-container">
-        
+
         <!-- Cabeçalho -->
         <div class="dash-header">
             <div>
@@ -136,6 +136,7 @@
             <div class="panel chart-box">
                 <div class="panel-header">
                     <h3>Histórico de Produção</h3>
+                    <button id="btn-open-producao" class="btn-small outline">Registrar Entrega</button>
                     <span class="badge">Últimos 6 lançamentos</span>
                 </div>
                 <div class="chart-container">
@@ -270,5 +271,50 @@
         </div>
     </div>
 
+    <!-- MODAL 4: REGISTRO DE PRODUÇÃO -->
+    <div id="modal-producao" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Registrar Entrega/Produção</h3>
+                <span class="close-modal" data-target="modal-producao">&times;</span>
+            </div>
+            <form id="form-producao">
+                <div class="form-group">
+                    <label>Tipo de Produto</label>
+                    <select id="prod-tipo" required>
+                        <option value="LEITE">🥛 Leite (Litros)</option>
+                        <option value="SOJA">🌱 Soja (Kg)</option>
+                        <option value="MILHO">🌽 Milho (Kg)</option>
+                        <option value="TRIGO">🌾 Trigo (Kg)</option>
+                        <option value="CAFÉ"> café (Kg)</option>
+
+
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Quantidade</label>
+                        <input type="number" id="prod-qtd" step="0.01" min="0.1" placeholder="0.00" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Data da Entrega</label>
+                        <input type="date" id="prod-data" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Qualidade / Classificação</label>
+                    <select id="prod-qualidade">
+                        <option value="A">Tipo A (Excelência)</option>
+                        <option value="B">Tipo B (Padrão)</option>
+                        <option value="C">Tipo C (Restrição)</option>
+                        <option value="PADRAO">Padrão Exportação</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-submit">Confirmar Entrega</button>
+            </form>
+        </div>
+    </div>
+
 </body>
+
 </html>

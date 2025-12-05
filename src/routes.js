@@ -1,14 +1,13 @@
 import express from 'express'
 import authMiddleware from './middlewares/auth.js';
 
-// [FIX] Imports padronizados (PascalCase para controllers)
 import { 
   createUser, 
   deleteUser, 
   getAllUsers,
   getUserById,
   getProfile
-} from './controllers/UserController.js' // Verifique se o arquivo físico é UserController.js
+} from './controllers/UserController.js'
 
 import upload from './config/multer.js'
 import LoginController from './controllers/LoginController.js'
@@ -17,69 +16,59 @@ import ContactController from './controllers/ContactController.js'
 import DashboardController from './controllers/DashboardController.js'
 import OperacionalController from './controllers/OperacionalController.js'
 import FinanceiroController from './controllers/FinanceiroController.js'
+import ProducaoController from './controllers/ProducaoController.js';
 
 const router = express.Router()
 
 // ==============================================================================
-// 1. ROTAS PÚBLICAS (Acesso livre sem Token)
+// 1. ROTAS PÚBLICAS (Sem Token)
 // ==============================================================================
-
-// Autenticação e Registro
 router.post('/usuarios/cadastro', upload.single('foto'), createUser)
 router.post('/usuarios/login', LoginController.login)
-
-// Contato (Público)
 router.post('/contato/enviar', ContactController.send)
 
+router.get('/usuarios/veiculos', VeiculoController.index);      // Listar (Vitrine)
 
 // ==============================================================================
 // 2. BARREIRA DE SEGURANÇA (JWT)
 // ==============================================================================
-// Todas as rotas abaixo desta linha exigem Header 'Authorization: Bearer <token>'
 router.use(authMiddleware);
 
 
 // ==============================================================================
-// 3. ROTAS PROTEGIDAS ESPECÍFICAS (Alta Prioridade)
+// 3. ROTAS DE NEGÓCIO (Agrupadas por Domínio)
 // ==============================================================================
-// Estas rotas DEVEM vir antes de rotas dinâmicas (/:id) para evitar conflitos.
 
-// --- Dashboard (Ociosa a rota mais acessada) ---
+// --- Dashboard & Perfil ---
 router.get('/usuarios/dashboard', DashboardController.getDados); 
-
 router.get('/usuarios/meu-perfil', getProfile);
+router.get('/usuarios/meus-veiculos', VeiculoController.myVehicles);
 
-// --- Listagens Gerais ---
-router.get('/usuarios/todos', getAllUsers)
+// --- Veículos (CRUD Completo) ---
+// Agrupados para facilitar manutenção
+router.post('/usuarios/veiculos', upload.array('fotos', 10), VeiculoController.store); // Criar
+router.get('/usuarios/veiculos/:id', VeiculoController.show);   // Detalhes
+router.put('/usuarios/veiculos/:id', VeiculoController.update); // Editar
+router.delete('/usuarios/veiculos/:id', VeiculoController.delete); // Remover
 
-// --- Operacional e Financeiro ---
+// --- Gestão Operacional (Logística e Campo) ---
+router.get('/operacional/armazens', OperacionalController.indexArmazens); // [CRÍTICO] Faltava esta rota para o Select funcionar
 router.post('/operacional/agendamento', OperacionalController.storeAgendamento);
 router.post('/operacional/atividade', OperacionalController.storeAtividade);
+
+// --- Produção e Financeiro ---
+router.post('/producao/registro', ProducaoController.store);
 router.post('/financeiro/lancamento', FinanceiroController.store);
 
-// --- Veículos (Escrita) ---
-router.post('/usuarios/veiculos', upload.array('fotos', 10), VeiculoController.store)
+// --- Administração de Usuários ---
+router.get('/usuarios/todos', getAllUsers);
 
 
 // ==============================================================================
-// 4. ROTAS PROTEGIDAS DINÂMICAS (Baixa Prioridade / Catch-All)
+// 4. ROTAS DINÂMICAS GERAIS (Catch-All)
 // ==============================================================================
-// Rotas que recebem parâmetros (/:id). O Express só deve chegar aqui se não 
-// encontrar nenhuma rota específica acima.
+// Cuidado: Esta rota captura qualquer GET /usuarios/QUALQUER_COISA
+router.get('/usuarios/:id', getUserById);
+router.delete('/usuarios/deletar/:id', deleteUser);
 
-// Veículos por ID
-router.get('/usuarios/veiculos/:id', VeiculoController.index) // Lista todos os veículos
-
-router.put('/usuarios/veiculos/:id', VeiculoController.update)
-router.delete('/usuarios/veiculos/:id', VeiculoController.delete)
-// Se precisar ver um veículo específico:
-router.get('/usuarios/veiculos/:id', VeiculoController.show) 
-
-// Usuários por ID (PERIGO: Catch-All)
-// Esta rota captura qualquer GET /usuarios/QUALQUER_COISA
-// Por isso ela é estritamente a ÚLTIMA rota GET de usuários.
-router.get('/usuarios/:id', getUserById)
-
-router.delete('/usuarios/deletar/:id', deleteUser)
-
-export default router
+export default router;

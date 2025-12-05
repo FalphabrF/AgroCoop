@@ -2,48 +2,112 @@
 <html lang="pt-BR">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Perfil do Cooperado - AgroCoop</title>
-  <link rel="stylesheet" href="../css/perfil.css">
-  <script src="../js/perfil.js" defer></script>
-  <link rel="shortcut icon" href="../img/image.png" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil do Cooperado - AgroCoop</title>
+    <!-- Reutilizando CSS do Dashboard para consistência -->
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <!-- Se tiver CSS específico do perfil, carregue aqui -->
+    <link rel="stylesheet" href="/css/perfil.css"> 
+    
+    <script src="/js/perfil.js" defer></script>
+    <link rel="shortcut icon" href="/img/image.png" type="image/x-icon">
+    
+    <style>
+        /* CSS Inline rápido para o layout do perfil se não tiver arquivo css */
+        .perfil-container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+        
+        /* Carteirinha */
+        .carteirinha { background: white; border-radius: 12px; padding: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); display: flex; gap: 30px; align-items: center; margin-bottom: 40px; border-left: 5px solid #2e7d32; }
+        .carteirinha img { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 4px solid #f1f8f4; }
+        .cooperado-info h2 { margin: 0; color: #333; font-size: 1.8rem; }
+        .cooperado-info p { color: #666; margin-top: 5px; font-size: 1rem; }
+        .cooperado-info span { font-weight: bold; color: #2e7d32; }
+
+        /* Formulário de Dados (Readonly) */
+        .dados-section { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin-bottom: 40px; }
+        .dados-section h3 { margin-bottom: 20px; color: #444; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .form-group label { display: block; font-size: 0.9rem; color: #777; margin-bottom: 5px; }
+        .form-group input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; background-color: #f9f9f9; color: #333; }
+        
+        @media(max-width: 768px) { .form-grid { grid-template-columns: 1fr; } .carteirinha { flex-direction: column; text-align: center; } }
+    </style>
 </head>
 
 <body>
-  <header class="navbar">
-    <a href="/inicial.html" class="logo">
-      <img src="/img/image.png" alt="Logo AgroCoop" class="logo-img">
-      <span>AgroCoop🌱</span>
-    </a>
-    <nav>
-      <ul>
-        <li><a href="/dashboard.html" class="active">Painel</a></li>
-        <li><a href="/perfil.html">Meu Perfil</a></li>
-        <li><a href="/veiculo.html">Veículos</a></li>
-        <li><a href="/login.html">Sair</a></li>
-      </ul>
-    </nav>
-  </header>
+    <header class="navbar">
+        <a href="/dashboard.html" class="logo">
+            <img src="/img/image.png" alt="Logo AgroCoop">
+            <span>AgroCoop🌱</span>
+        </a>
+        <nav>
+            <ul>
+                <li><a href="/dashboard.html">Painel</a></li>
+                <li><a href="/perfil.html" class="active">Meu Perfil</a></li>
+                <li><a href="/veiculo.html">Novo Anúncio</a></li>
+                <li><a href="/login.html" onclick="localStorage.clear()">Sair</a></li>
+            </ul>
+        </nav>
+    </header>
 
-  <main class="perfil-container">
-    <div class="carteirinha">
-      <div class="carteirinha-topo">
-        <img id="foto-cooperado" src="../img/default-user.png" alt="Foto do Cooperado">
-        <div class="cooperado-info">
-          <h2 id="nome-cooperado">Nome do Cooperado</h2>
-          <p>ID: <span id="id-cooperado">0000</span></p>
-          <p>Status: <span id="status">Ativo</span></p>
-          <p>Data de Entrada: <span id="data-entrada">N/A</span></p>
+    <main class="perfil-container">
+        
+        <!-- 1. Carteirinha Visual -->
+        <div class="carteirinha">
+            <img id="foto-cooperado" src="/img/image.png" alt="Foto do Cooperado" onerror="this.src='/img/image.png'">
+            <div class="cooperado-info">
+                <h2 id="nome_completo">Carregando...</h2>
+                <p>Membro desde: <span id="data-entrada">--/--/----</span></p>
+                <p>Registro: <span id="numero_registro">---</span></p>
+            </div>
         </div>
-      </div>
-    </div>
-    </div>
-  </main>
 
-  <footer class="footer">
-    <p>&copy; 2025 AgroCoop - Todos os direitos reservados</p>
-  </footer>
+        <!-- 2. Dados Cadastrais (Inputs para o JS preencher) -->
+        <div class="dados-section">
+            <h3>Meus Dados Cadastrais</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>E-mail</label>
+                    <input type="text" id="email" readonly>
+                </div>
+                <div class="form-group">
+                    <label>CPF</label>
+                    <input type="text" id="cpf" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Telefone</label>
+                    <input type="text" id="telefone" readonly>
+                </div>
+               
+                <div class="form-group">
+                    <label>Cidade</label>
+                    <input type="text" id="cidade" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Estado</label>
+                    <input type="text" id="estado" readonly>
+                </div>
+                <div class="form-group" >
+                    <label>Endereço Completo</label>
+                    <input type="text" id="endereco" readonly>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Meus Veículos -->
+        <div class="profile-section">
+            <h2 style="margin-bottom: 20px; color: #444; border-left: 5px solid #2e7d32; padding-left: 15px;">Meus Anúncios de Veículos</h2>
+            
+            <div id="meus-veiculos-list" class="grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px;">
+                <p style="color: #666;">Carregando seus anúncios...</p>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 AgroCoop - Todos os direitos reservados</p>
+    </footer>
 </body>
-
 </html>

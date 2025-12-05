@@ -1,4 +1,6 @@
 import Agendamento from '../models/Agendamento.js';
+import Armazem from '../models/Armazem.js'; // Importante: Importar o model Armazem
+
 import AtividadeCampo from '../models/AtividadeCampo.js';
 import Cooperado from '../models/cooperado.js';
 import crypto from 'crypto';
@@ -6,6 +8,19 @@ import crypto from 'crypto';
 class OperacionalController {
     
     // POST /operacional/agendamento
+    async indexArmazens(req, res) {
+        try {
+            const armazens = await Armazem.findAll({
+                attributes: ['id', 'nome'] // Retorna apenas o necessário para o <select>
+            });
+            return res.json(armazens);
+        } catch (error) {
+            console.error("Erro ao listar armazéns:", error);
+            return res.status(500).json({ error: "Erro ao listar armazéns" });
+        }
+    }
+    
+    
     async storeAgendamento(req, res) {
         try {
             const { cooperadoId, armazemId, data, hora } = req.body;
