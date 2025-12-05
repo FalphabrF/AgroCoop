@@ -72,18 +72,27 @@ const runSeed = async () => {
         const [user, created] = await Cooperado.findOrCreate({
             where: { email: targetEmail },
             defaults: {
-                nome: "Usuário Teste",
+                // [CORREÇÃO] Removido 'nome' (não existe) e adicionados campos obrigatórios
                 nome_completo: "Usuário Teste da Silva",
                 cpf: "000.000.000-00",
-                senha: "senha_temporaria_hash_aqui", // Em produção real isso seria um hash
+                rg: "00.000.000-0", // Campo provável obrigatório
+                data_nascimento: "1990-01-01", // [FIX] Campo que causou o erro
+                senha: "senha_temporaria_hash_aqui", 
                 telefone: "00000000",
-                tipo_cooperado: "PRATA"
+                tipo_cooperado: "PRATA",
+                endereco: "Rua Exemplo, 123", // Preenchendo defaults para evitar erro notNull
+                cidade: "Cidade Teste",
+                estado: "PR",
+                cep: "00000-000",
+                numero_registro: "12345",
+                ativo: true,
+                data_entrada: new Date()
             }
         });
 
         if(created) console.log("🆕 Usuário de teste criado automaticamente.");
 
-        console.log(`👤 Alimentando dados para: ${user.nome_completo || user.nome} (ID: ${user.id})`);
+        console.log(`👤 Alimentando dados para: ${user.nome_completo} (ID: ${user.id})`);
 
         // Limpeza prévia
         await Financeiro.destroy({ where: { cooperadoId: user.id } });
