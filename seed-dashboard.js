@@ -79,7 +79,7 @@ const runSeed = async () => {
                 data_nascimento: "1990-01-01", // [FIX] Campo que causou o erro
                 senha: "senha_temporaria_hash_aqui", 
                 telefone: "00000000",
-                tipo_cooperado: "PRATA",
+                tipo_cooperado: "associado",
                 endereco: "Rua Exemplo, 123", // Preenchendo defaults para evitar erro notNull
                 cidade: "Cidade Teste",
                 estado: "PR",
