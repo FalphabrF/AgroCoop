@@ -89,4 +89,42 @@ Cooperado.hasMany(Producao, { foreignKey: 'cooperadoId' });
 Producao.belongsTo(Cooperado, { foreignKey: 'cooperadoId' });
 
 // Cooperado <-> Financeiro
-Cooperado.hasMany(Financeiro, { foreign
+Cooperado.hasMany(Financeiro, { foreignKey: 'cooperadoId' });
+Financeiro.belongsTo(Cooperado, { foreignKey: 'cooperadoId' });
+
+// Cooperado <-> Agendamento (Logística)
+Cooperado.hasMany(Agendamento, { foreignKey: 'cooperadoId' });
+Agendamento.belongsTo(Cooperado, { foreignKey: 'cooperadoId' });
+
+// Armazém <-> Agendamento
+Armazem.hasMany(Agendamento, { foreignKey: 'armazemId' });
+Agendamento.belongsTo(Armazem, { foreignKey: 'armazemId' });
+
+// Cooperado <-> Atividade de Campo
+Cooperado.hasMany(AtividadeCampo, { foreignKey: 'cooperadoId' });
+AtividadeCampo.belongsTo(Cooperado, { foreignKey: 'cooperadoId' });
+
+// ----------------------------------------------------------------
+// INICIALIZAÇÃO DO SERVIDOR
+// ----------------------------------------------------------------
+sequelize.authenticate()
+  .then(() => {
+    console.log('✅ Banco conectado com sucesso!');
+    if (process.env.DATABASE_URL) console.log('☁️  Rodando em modo PRODUÇÃO (Render)');
+    else console.log('🏠 Rodando em modo DESENVOLVIMENTO (Local)');
+    
+    app.listen(3000, () => {
+        console.log('🚀 Servidor ON em http://localhost:3000');
+    });
+  })
+  .catch(err => {
+    console.error('❌ Erro fatal ao conectar no banco:', err);
+  });
+
+// Middleware de Erro Global
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({ error: "Erro interno do servidor" });
+});
+
+export default app;
