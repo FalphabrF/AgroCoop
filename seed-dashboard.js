@@ -1,5 +1,6 @@
 import Sequelize from 'sequelize';
 import config from './src/config/database.js';
+import crypto from 'crypto'; // [FIX] Import necessário para gerar UUID manualmente
 
 // Importando os Models
 import Cooperado from './src/models/cooperado.js';
@@ -72,6 +73,8 @@ const runSeed = async () => {
         const [user, created] = await Cooperado.findOrCreate({
             where: { email: targetEmail },
             defaults: {
+                // [FIX] Gerar ID manualmente para evitar erro notNull no Postgres
+                id: crypto.randomUUID(),
                 // [CORREÇÃO] Removido 'nome' (não existe) e adicionados campos obrigatórios
                 nome_completo: "Usuário Teste da Silva",
                 cpf: "000.000.000-00",
@@ -103,11 +106,19 @@ const runSeed = async () => {
         // --- INFRAESTRUTURA (ARMAZÉNS) ---
         const [armazem1] = await Armazem.findOrCreate({
             where: { nome: 'Unidade Central - Grãos' },
-            defaults: { localizacao: 'Rodovia PR-151, km 300', capacidade_hora: 20 }
+            defaults: { 
+                id: crypto.randomUUID(), // [FIX] ID manual para armazém também
+                localizacao: 'Rodovia PR-151, km 300', 
+                capacidade_hora: 20 
+            }
         });
         const [armazem2] = await Armazem.findOrCreate({
             where: { nome: 'Unidade Leiteira Norte' },
-            defaults: { localizacao: 'Zona Rural, Setor B', capacidade_hora: 15 }
+            defaults: { 
+                id: crypto.randomUUID(), // [FIX] ID manual
+                localizacao: 'Zona Rural, Setor B', 
+                capacidade_hora: 15 
+            }
         });
 
         // --- MASSA DE DADOS FINANCEIROS ---
