@@ -52,7 +52,9 @@ app.get('/', (req, res) => {
 // ----------------------------------------------------------------
 // BANCO DE DADOS (SEQUELIZE)
 // ----------------------------------------------------------------
-const sequelize = new Sequelize(config);
+const sequelize = process.env.DATABASE_URL 
+    ? new Sequelize(process.env.DATABASE_URL, config) // Produção
+    : new Sequelize(config); // Local
 
 // 1. Inicializar Models
 Cooperado.init(sequelize);
