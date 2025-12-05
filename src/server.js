@@ -8,7 +8,7 @@ import config from './config/database.js';
 
 // --- IMPORTS DOS MODELS ---
 // [FIX] Padronizado para PascalCase para evitar erros em sistemas Case-Sensitive (Linux/Render)
-import Cooperado from './models/Cooperado.js';
+import Cooperado from './models/cooperado.js';
 import Veiculo from './models/Veiculo.js';
 import Producao from './models/Producao.js';
 import Financeiro from './models/Financeiro.js';
