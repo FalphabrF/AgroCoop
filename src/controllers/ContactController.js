@@ -16,32 +16,21 @@ class ContactController {
       return res.status(500).json({ error: "Erro de configuração no servidor." });
     }
 
-    // [FIX DE REDE AVANÇADO]
+    // [FIX FINAL] Usando o preset 'service: gmail'
+    // Isso abstrai a porta e o host, usando as configurações ideais conhecidas pelo Nodemailer.
+    // Se isso falhar, o Google está bloqueando o IP do Render irrevogavelmente.
     const transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com', // Hardcoded é mais seguro que variável vazia aqui
-      port: 587, // Voltamos para 587 (STARTTLS) - mais permissiva em containers
-      secure: false, // false para 587
+      service: 'gmail', 
       auth: {
         user: process.env.MAIL_USER,
         pass: process.env.MAIL_PASS,
       },
-      tls: {
-        ciphers: 'SSLv3', // Compatibilidade
-        rejectUnauthorized: false 
-      },
-      // [A MÁGICA ESTÁ AQUI]
-      family: 4, // Força o Node a usar IPv4 (Resolve o ETIMEDOUT de IPv6)
-      
-      // Timeouts ajustados
-      connectionTimeout: 10000, // 10s
-      greetingTimeout: 5000,    // 5s
-      socketTimeout: 20000,     // 20s
       logger: true,
-      debug: false
+      debug: true // Debug completo ativado
     });
 
     try {
-      console.log(`📨 Enviando (IPv4 Force) via ${process.env.MAIL_USER}...`);
+      console.log(`📨 Enviando via Serviço Gmail (${process.env.MAIL_USER})...`);
 
       const info = await transporter.sendMail({
         from: `"Fale Conosco" <${process.env.MAIL_USER}>`,
@@ -62,9 +51,11 @@ class ContactController {
 
     } catch (error) {
       console.error("❌ Erro SMTP:", error);
+      
+      // Feedback técnico para você no frontend
       return res.status(500).json({ 
-          error: "Não foi possível enviar o e-mail no momento.",
-          detalhes: error.code // Retorna o código (ETIMEDOUT, EAUTH) para ajudar
+          error: "Erro de conexão com o Gmail.",
+          detalhes: "O Google pode estar bloqueando o IP do servidor. Considere usar uma API de E-mail." 
       });
     }
   }
