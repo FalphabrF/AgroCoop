@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nossos Parceiros - AgroCoop</title>
-    
+    <script src="/js/inicial.js" defer></script>
+
     <!-- CSS Base e Específico -->
-    <link rel="stylesheet" href="/css/dashboard.css"> <!-- Reuso do base (navbar/footer) -->
     <link rel="stylesheet" href="/css/cooperados.css"> <!-- CSS Específico desta página -->
-    
+
     <link rel="shortcut icon" href="/img/image.png" type="image/x-icon">
 </head>
 
@@ -17,18 +17,46 @@
     <!-- Navbar Padrão -->
     <header class="navbar">
         <a href="/inicial.html" class="logo">
-            <img src="/img/image.png" alt="Logo AgroCoop">
+            <img src="/img/image.png" alt="Logo AgroCoop" class="logo-img">
             <span>AgroCoop🌱</span>
         </a>
         <nav>
             <ul>
-                <li><a href="/dashboard.html">Painel</a></li>
-                <li><a href="/cooperados.html" class="active">Fornecedores</a></li>
-                <li><a href="/veiculo.html">Veículos</a></li>
-                <li><a href="/login.html">Sair</a></li>
+                <li><a href="/cadastro.html">Seja Cooperado</a></li>
+                <li><a href="/login.html">Entrar</a></li>
             </ul>
         </nav>
     </header>
+
+
+    <nav class="mega">
+        <ul class="menu">
+            <li class="menu-item"> <a href="#" class="menu-trigger">Contato</a>
+                <ul class="submenu">
+                    <li><a href="/forum.html">Fale Conosco</a></li>
+                </ul>
+            </li>
+            <li class="menu-item"> <a href="#" class="menu-trigger">Trabalhe na AgroCoop</a>
+                <ul class="submenu">
+                    <li><a href="/cadastro.html">Seja um Colaborador</a></li>
+                    <li><a href="/vantagens.html">Vantagens De Se Tornar Um Cooperado</a></li>
+                </ul>
+            </li>
+            <li class="menu-item"> <a href="#" class="menu-trigger">Fornecedores</a>
+                <ul class="submenu">
+                    <li><a href="/cooperados.html">Melhores Fornecedores</a></li>
+                </ul>
+            </li>
+            <li class="menu-item"> <a href="#" class="menu-trigger">Produtos & Serviços</a>
+                <ul class="submenu">
+                    <li><a href="/aviacao-agricola.html">Aviação Agrícola</a></li>
+                    <li><a href="/credito-rural.html">Crédito Rural</a></li>
+                    <li><a href="/exibir_veiculos.html">Veículos</a></li>
+                    <li><a href="/">Outros Serviços</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
 
     <main class="partners-container">
         <div class="page-header">
@@ -38,11 +66,12 @@
 
         <!-- GRID DE PARCEIROS -->
         <div class="partners-grid">
-            
+
             <!-- Card 1 -->
             <div class="partner-card">
                 <div class="logo-box">
-                    <img src="/img/fornecedores/agrobartt.png" alt="AgroBartt" onerror="this.src='https://placehold.co/200x100?text=AgroBartt'">
+                    <img src="/img/fornecedores/agrobartt.png" alt="AgroBartt"
+                        onerror="this.src='https://placehold.co/200x100?text=AgroBartt'">
                 </div>
                 <div class="partner-info">
                     <h3>AgroBartt</h3>
@@ -54,7 +83,8 @@
             <!-- Card 2 -->
             <div class="partner-card">
                 <div class="logo-box">
-                    <img src="/img/fornecedores/saframax.png" alt="SafraMax" onerror="this.src='https://placehold.co/200x100?text=SafraMax'">
+                    <img src="/img/fornecedores/saframax.png" alt="SafraMax"
+                        onerror="this.src='https://placehold.co/200x100?text=SafraMax'">
                 </div>
                 <div class="partner-info">
                     <h3>SafraMax</h3>
@@ -66,7 +96,8 @@
             <!-- Card 3 -->
             <div class="partner-card">
                 <div class="logo-box">
-                    <img src="/img/fornecedores/panter.png" alt="Panter" onerror="this.src='https://placehold.co/200x100?text=Panter'">
+                    <img src="/img/fornecedores/panter.png" alt="Panter"
+                        onerror="this.src='https://placehold.co/200x100?text=Panter'">
                 </div>
                 <div class="partner-info">
                     <h3>Panter</h3>
@@ -78,7 +109,8 @@
             <!-- Card 4 -->
             <div class="partner-card">
                 <div class="logo-box">
-                    <img src="/img/fornecedores/saojose.png" alt="São José Industrial" onerror="this.src='https://placehold.co/200x100?text=São+José'">
+                    <img src="/img/fornecedores/saojose.png" alt="São José Industrial"
+                        onerror="this.src='https://placehold.co/200x100?text=São+José'">
                 </div>
                 <div class="partner-info">
                     <h3>São José Industrial</h3>
@@ -90,7 +122,8 @@
             <!-- Card 5 -->
             <div class="partner-card">
                 <div class="logo-box">
-                    <img src="/img/fornecedores/andrade.png" alt="Bombas Andrade" onerror="this.src='https://placehold.co/200x100?text=Andrade'">
+                    <img src="/img/fornecedores/andrade.png" alt="Bombas Andrade"
+                        onerror="this.src='https://placehold.co/200x100?text=Andrade'">
                 </div>
                 <div class="partner-info">
                     <h3>Bombas Andrade</h3>
@@ -102,7 +135,8 @@
             <!-- Card 6 -->
             <div class="partner-card">
                 <div class="logo-box">
-                    <img src="/img/fornecedores/iac.png" alt="IAC" onerror="this.src='https://placehold.co/200x100?text=IAC'">
+                    <img src="/img/fornecedores/iac.png" alt="IAC"
+                        onerror="this.src='https://placehold.co/200x100?text=IAC'">
                 </div>
                 <div class="partner-info">
                     <h3>IAC</h3>
@@ -114,7 +148,8 @@
             <!-- Card 7 -->
             <div class="partner-card">
                 <div class="logo-box">
-                    <img src="/img/fornecedores/agres.png" alt="Agres" onerror="this.src='https://placehold.co/200x100?text=Agres'">
+                    <img src="/img/fornecedores/agres.png" alt="Agres"
+                        onerror="this.src='https://placehold.co/200x100?text=Agres'">
                 </div>
                 <div class="partner-info">
                     <h3>Agres</h3>
@@ -126,7 +161,8 @@
             <!-- Card 8 -->
             <div class="partner-card">
                 <div class="logo-box">
-                    <img src="/img/fornecedores/triton.png" alt="Triton" onerror="this.src='https://placehold.co/200x100?text=Triton'">
+                    <img src="/img/fornecedores/triton.png" alt="Triton"
+                        onerror="this.src='https://placehold.co/200x100?text=Triton'">
                 </div>
                 <div class="partner-info">
                     <h3>Triton</h3>
@@ -135,10 +171,11 @@
                 </div>
             </div>
 
-             <!-- Card 9 -->
-             <div class="partner-card">
+            <!-- Card 9 -->
+            <div class="partner-card">
                 <div class="logo-box">
-                    <img src="/img/fornecedores/baldan.png" alt="Baldan" onerror="this.src='https://placehold.co/200x100?text=Baldan'">
+                    <img src="/img/fornecedores/baldan.png" alt="Baldan"
+                        onerror="this.src='https://placehold.co/200x100?text=Baldan'">
                 </div>
                 <div class="partner-info">
                     <h3>Baldan</h3>
@@ -147,10 +184,11 @@
                 </div>
             </div>
 
-             <!-- Card 10 -->
-             <div class="partner-card">
+            <!-- Card 10 -->
+            <div class="partner-card">
                 <div class="logo-box">
-                    <img src="/img/fornecedores/schemaq.png" alt="Schemaq" onerror="this.src='https://placehold.co/200x100?text=Schemaq'">
+                    <img src="/img/fornecedores/schemaq.png" alt="Schemaq"
+                        onerror="this.src='https://placehold.co/200x100?text=Schemaq'">
                 </div>
                 <div class="partner-info">
                     <h3>Schemaq</h3>
@@ -159,10 +197,11 @@
                 </div>
             </div>
 
-             <!-- Card 11 -->
-             <div class="partner-card">
+            <!-- Card 11 -->
+            <div class="partner-card">
                 <div class="logo-box">
-                    <img src="/img/fornecedores/nogueira.png" alt="Nogueira" onerror="this.src='https://placehold.co/200x100?text=Nogueira'">
+                    <img src="/img/fornecedores/nogueira.png" alt="Nogueira"
+                        onerror="this.src='https://placehold.co/200x100?text=Nogueira'">
                 </div>
                 <div class="partner-info">
                     <h3>Nogueira</h3>
@@ -171,10 +210,11 @@
                 </div>
             </div>
 
-             <!-- Card 12 -->
-             <div class="partner-card">
+            <!-- Card 12 -->
+            <div class="partner-card">
                 <div class="logo-box">
-                    <img src="/img/fornecedores/kuhn.png" alt="Kuhn" onerror="this.src='https://placehold.co/200x100?text=Kuhn'">
+                    <img src="/img/fornecedores/kuhn.png" alt="Kuhn"
+                        onerror="this.src='https://placehold.co/200x100?text=Kuhn'">
                 </div>
                 <div class="partner-info">
                     <h3>Kuhn</h3>
@@ -190,4 +230,5 @@
         <p>&copy; 2025 AgroCoop - Parceiros</p>
     </footer>
 </body>
+
 </html>

@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AgroCoop - Cooperativa Agropecuária</title>
 
-    <!-- [FIX] Caminhos absolutos (root-relative) -->
     <link rel="stylesheet" href="/css/inicial.css">
+    <!-- O script inicial.js agora controla a sessão na home -->
     <script src="/js/inicial.js" defer></script>
     <link rel="shortcut icon" type="image/x-icon" href="/img/image.png">
 </head>
@@ -20,8 +20,8 @@
             <span>AgroCoop🌱</span>
         </div>
         <nav>
+            <!-- O JS vai substituir este conteúdo se o usuário estiver logado -->
             <ul>
-                <!-- [FIX] Links absolutos -->
                 <li><a href="/cadastro.html">Seja Cooperado</a></li>
                 <li><a href="/login.html">Entrar</a></li>
             </ul>
@@ -39,7 +39,6 @@
                 <ul class="submenu">
                     <li><a href="/cadastro.html">Seja um Colaborador</a></li>
                     <li><a href="/vantagens.html">Vantagens De Se Tornar Um Cooperado</a></li>
-
                 </ul>
             </li>
             <li class="menu-item"> <a href="#" class="menu-trigger">Fornecedores</a>
@@ -49,7 +48,6 @@
             </li>
             <li class="menu-item"> <a href="#" class="menu-trigger">Produtos & Serviços</a>
                 <ul class="submenu">
-                    <!-- [FIX] Nomes padronizados sem acentos -->
                     <li><a href="/aviacao-agricola.html">Aviação Agrícola</a></li>
                     <li><a href="/credito-rural.html">Crédito Rural</a></li>
                     <li><a href="/exibir_veiculos.html">Veículos</a></li>
@@ -59,14 +57,13 @@
         </ul>
     </nav>
 
-    <!-- [FIX] O main deve estar DENTRO do body, não fora do html -->
     <main>
         <!-- Hero -->
         <section class="hero">
             <div class="hero-text">
                 <h1>Cooperativa Agropecuária</h1>
                 <p>Unindo produtores, fortalecendo comunidades e criando oportunidades justas.</p>
-                <!-- Botão leva para a página de cadastro -->
+                <!-- Este botão muda para "Acessar Painel" via JS se logado -->
                 <a href="/cadastro.html" class="btn">Quero Ser Cooperado</a>
             </div>
         </section>
@@ -77,31 +74,19 @@
             <div class="sobre-container">
                 <article class="sobre-bloco destaque">
                     <h3>Quem Somos</h3>
-                    <p> A <strong>AgroCoop</strong> nasceu com um propósito claro: <em>aproximar pessoas através do
-                            campo</em>. Somos uma cooperativa agropecuária que une produtores, consumidores e parceiros
-                        em
-                        uma rede de confiança, colaboração e crescimento mútuo. </p>
+                    <p> A <strong>AgroCoop</strong> nasceu com um propósito claro: <em>aproximar pessoas através do campo</em>. Somos uma cooperativa agropecuária que une produtores, consumidores e parceiros em uma rede de confiança, colaboração e crescimento mútuo. </p>
                 </article>
                 <article class="sobre-bloco destaque">
                     <h3>Nossa Essência</h3>
-                    <p> Acreditamos que <strong>cada colheita carrega histórias, famílias e sonhos</strong>. Trabalhamos
-                        para valorizar quem produz, garantindo renda justa, fortalecendo a agricultura familiar e
-                        apoiando
-                        também os empreendimentos de maior escala. </p>
+                    <p> Acreditamos que <strong>cada colheita carrega histórias, famílias e sonhos</strong>. Trabalhamos para valorizar quem produz, garantindo renda justa, fortalecendo a agricultura familiar e apoiando também os empreendimentos de maior escala. </p>
                 </article>
                 <article class="sobre-bloco destaque">
                     <h3>O Que Construímos</h3>
-                    <p> Mais do que uma cooperativa, <strong>somos uma comunidade</strong>. Aqui, o produtor encontra
-                        apoio
-                        para inovar, o consumidor tem acesso a alimentos de qualidade com procedência garantida, e os
-                        parceiros descobrem novas formas de contribuir para o desenvolvimento local. </p>
+                    <p> Mais do que uma cooperativa, <strong>somos uma comunidade</strong>. Aqui, o produtor encontra apoio para inovar, o consumidor tem acesso a alimentos de qualidade com procedência garantida, e os parceiros descobrem novas formas de contribuir para o desenvolvimento local. </p>
                 </article>
                 <article class="sobre-bloco destaque">
                     <h3>Nossa Visão</h3>
-                    <p> Na AgroCoop, acreditamos que <strong>juntos somos mais fortes</strong>. Cada parceria é uma
-                        semente
-                        que, cultivada com dedicação, pode transformar o futuro da agricultura e aproximar ainda mais o
-                        campo da cidade. </p>
+                    <p> Na AgroCoop, acreditamos que <strong>juntos somos mais fortes</strong>. Cada parceria é uma semente que, cultivada com dedicação, pode transformar o futuro da agricultura e aproximar ainda mais o campo da cidade. </p>
                 </article>
             </div>
         </section>
@@ -124,8 +109,6 @@
                 </div>
             </div>
         </section>
-
-        <!-- Cadastro -->
     </main>
 
     <footer class="footer">
