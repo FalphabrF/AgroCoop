@@ -6,7 +6,9 @@ import {
   deleteUser, 
   getAllUsers,
   getUserById,
-  getProfile
+  getProfile,
+  updateProfile, // [NOVO]
+  deleteProfile  // [NOVO]
 } from './controllers/userController.js'
 
 import upload from './config/multer.js'
@@ -27,32 +29,34 @@ router.post('/usuarios/cadastro', upload.single('foto'), createUser)
 router.post('/usuarios/login', LoginController.login)
 router.post('/contato/enviar', ContactController.send)
 
-router.get('/usuarios/veiculos', VeiculoController.index);      // Listar (Vitrine)
+// Vitrine pública de veículos
+router.get('/usuarios/veiculos', VeiculoController.index); 
 
 // ==============================================================================
 // 2. BARREIRA DE SEGURANÇA (JWT)
 // ==============================================================================
 router.use(authMiddleware);
 
-
 // ==============================================================================
-// 3. ROTAS DE NEGÓCIO (Agrupadas por Domínio)
+// 3. ROTAS DE NEGÓCIO (Protegidas)
 // ==============================================================================
 
 // --- Dashboard & Perfil ---
 router.get('/usuarios/dashboard', DashboardController.getDados); 
 router.get('/usuarios/meu-perfil', getProfile);
+router.put('/usuarios/meu-perfil', updateProfile); // [NOVO] Editar perfil
+router.delete('/usuarios/meu-perfil', deleteProfile); // [NOVO] Excluir conta
+
 router.get('/usuarios/meus-veiculos', VeiculoController.myVehicles);
 
 // --- Veículos (CRUD Completo) ---
-// Agrupados para facilitar manutenção
-router.post('/usuarios/veiculos', upload.array('fotos', 10), VeiculoController.store); // Criar
-router.get('/usuarios/veiculos/:id', VeiculoController.show);   // Detalhes
-router.put('/usuarios/veiculos/:id', VeiculoController.update); // Editar
-router.delete('/usuarios/veiculos/:id', VeiculoController.delete); // Remover
+router.post('/usuarios/veiculos', upload.array('fotos', 10), VeiculoController.store);
+router.get('/usuarios/veiculos/:id', VeiculoController.show);
+router.put('/usuarios/veiculos/:id', VeiculoController.update);
+router.delete('/usuarios/veiculos/:id', VeiculoController.delete);
 
-// --- Gestão Operacional (Logística e Campo) ---
-router.get('/operacional/armazens', OperacionalController.indexArmazens); // [CRÍTICO] Faltava esta rota para o Select funcionar
+// --- Gestão Operacional ---
+router.get('/operacional/armazens', OperacionalController.indexArmazens);
 router.post('/operacional/agendamento', OperacionalController.storeAgendamento);
 router.post('/operacional/atividade', OperacionalController.storeAtividade);
 
@@ -60,14 +64,12 @@ router.post('/operacional/atividade', OperacionalController.storeAtividade);
 router.post('/producao/registro', ProducaoController.store);
 router.post('/financeiro/lancamento', FinanceiroController.store);
 
-// --- Administração de Usuários ---
+// --- Administração ---
 router.get('/usuarios/todos', getAllUsers);
 
-
 // ==============================================================================
-// 4. ROTAS DINÂMICAS GERAIS (Catch-All)
+// 4. ROTAS DINÂMICAS GERAIS
 // ==============================================================================
-// Cuidado: Esta rota captura qualquer GET /usuarios/QUALQUER_COISA
 router.get('/usuarios/:id', getUserById);
 router.delete('/usuarios/deletar/:id', deleteUser);
 

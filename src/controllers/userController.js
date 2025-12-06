@@ -10,18 +10,16 @@ const hashPassword = async (password) => {
 
 export const createUser = async (req, res) => {
     try {
-        // 1. Validação básica de duplicidade
         const existingUser = await Cooperado.findOne({ where: { email: req.body.email } });
         if (existingUser) {
             return res.status(400).json({ erro: "E-mail já cadastrado neste sistema." });
         }
 
-        // 2. Criptografar a senha antes de criar o objeto
         const passwordHash = await hashPassword(req.body.senha);
 
         const userToCreate = {
             id: crypto.randomUUID(),
-            nome_completo: req.body.nome_completo, // Certifique-se que o name do input é 'nome_completo'
+            nome_completo: req.body.nome_completo,
             cpf: req.body.cpf,
             data_nascimento: req.body.data_nascimento,
             telefone: req.body.telefone,
@@ -33,14 +31,11 @@ export const createUser = async (req, res) => {
             email: req.body.email,
             numero_registro: req.body.numero_registro,
             foto: req.file ? req.file.filename : null,
-            senha: passwordHash // <--- AQUI: Salva o hash, não a senha pura
+            senha: passwordHash
         };
 
         const user = await Cooperado.create(userToCreate);
 
-        // [CORREÇÃO EXPERT] 
-        // Se o frontend usa fetch(), res.redirect() NÃO funciona como esperado (o fetch baixa o HTML).
-        // Retornamos JSON 201 e o JavaScript do cliente faz o window.location.href
         return res.status(201).json({ 
             mensagem: "Cooperado criado com sucesso!",
             redirect: "/login.html"
@@ -55,52 +50,79 @@ export const createUser = async (req, res) => {
     }
 };
 
-
-// BUSCAR COOPERADO PELO ID (PRO PERFIL)
 export const getUserById = async (req, res) => {
     try {
         const { id } = req.params;
-
         const user = await Cooperado.findByPk(id, {
-            attributes: { exclude: ['senha'] } // [SEGURANÇA] Nunca devolva a senha, nem criptografada
+            attributes: { exclude: ['senha'] }
         });
 
-        if (!user) {
-            return res.status(404).json({ erro: "Usuário não encontrado" });
-        }
-
+        if (!user) return res.status(404).json({ erro: "Usuário não encontrado" });
         res.json(user);
-
     } catch (error) {
         console.error("ERRO REAL:", error);
         res.status(500).json({ erro: error.message });
     }
 };
+
 export const getProfile = async (req, res) => {
     try {
-        const id = req.userId; // Vem do Middleware de Auth
-
+        const id = req.userId; // Vem do Token
         const user = await Cooperado.findByPk(id, {
-            attributes: { exclude: ['senha'] } // Nunca devolva a senha
+            attributes: { exclude: ['senha'] }
         });
 
-        if (!user) {
-            return res.status(404).json({ error: "Perfil não encontrado" });
-        }
-
+        if (!user) return res.status(404).json({ error: "Perfil não encontrado" });
         return res.json(user);
-
     } catch (error) {
         console.error("Erro ao buscar perfil:", error);
         return res.status(500).json({ error: "Erro interno ao carregar perfil" });
     }
 };
 
-// TODOS
+// [NOVO] Atualizar dados do próprio perfil
+export const updateProfile = async (req, res) => {
+    try {
+        const id = req.userId;
+        const user = await Cooperado.findByPk(id);
+
+        if (!user) return res.status(404).json({ error: "Usuário não encontrado" });
+
+        // Filtra apenas campos permitidos para edição
+        const { nome_completo, telefone, endereco, cidade, estado, cep } = req.body;
+
+        await user.update({
+            nome_completo,
+            telefone,
+            endereco,
+            cidade,
+            estado,
+            cep
+        });
+
+        return res.json({ message: "Perfil atualizado!", user });
+    } catch (error) {
+        console.error("Erro ao atualizar perfil:", error);
+        return res.status(500).json({ error: "Erro ao atualizar perfil" });
+    }
+};
+
+// [NOVO] Excluir a própria conta
+export const deleteProfile = async (req, res) => {
+    try {
+        const id = req.userId;
+        await Cooperado.destroy({ where: { id } });
+        return res.status(204).send();
+    } catch (error) {
+        console.error("Erro ao excluir conta:", error);
+        return res.status(500).json({ error: "Erro ao excluir conta." });
+    }
+};
+
 export const getAllUsers = async (req, res) => {
     try {
         const users = await Cooperado.findAll({
-            attributes: { exclude: ['senha'] } // [SEGURANÇA] Protege a lista de usuários
+            attributes: { exclude: ['senha'] }
         });
         res.status(200).json(users);
     } catch (error) {
@@ -108,16 +130,10 @@ export const getAllUsers = async (req, res) => {
     }
 };
 
-
-// DELETAR
 export const deleteUser = async (req, res) => {
     try {
-        await Cooperado.destroy({
-            where: { id: req.params.id }
-        });
-
+        await Cooperado.destroy({ where: { id: req.params.id } });
         res.status(200).json({ mensagem: "Usuário deletado" });
-
     } catch (error) {
         res.status(500).json({ erro: 'Erro ao deletar' });
     }
