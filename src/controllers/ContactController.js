@@ -1,71 +1,70 @@
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 
-// Carrega as variáveis de ambiente
 dotenv.config();
 
 class ContactController {
   async send(req, res) {
     const { nome, email, mensagem } = req.body;
 
-    // 1. Validação Básica
     if (!nome || !email || !mensagem) {
       return res.status(400).json({ error: "Preencha todos os campos." });
     }
 
-    // 2. [FIX] Configuração Robusta para Cloud (Render/AWS)
-    // O problema de "carregando infinito" acontece porque a porta 587 é bloqueada ou lenta na nuvem.
-    // Forçamos a porta 465 (SSL) e adicionamos timeouts para não travar o servidor.
+    if (!process.env.MAIL_USER || !process.env.MAIL_PASS) {
+      console.error("❌ ERRO FATAL: Credenciais de e-mail ausentes.");
+      return res.status(500).json({ error: "Erro de configuração no servidor." });
+    }
+
+    // [FIX DE REDE AVANÇADO]
     const transporter = nodemailer.createTransport({
-      host: process.env.MAIL_HOST || 'smtp.gmail.com',
-      port: 465, // Força SSL (Secure Socket Layer)
-      secure: true, // Obrigatório para porta 465
+      host: 'smtp.gmail.com', // Hardcoded é mais seguro que variável vazia aqui
+      port: 587, // Voltamos para 587 (STARTTLS) - mais permissiva em containers
+      secure: false, // false para 587
       auth: {
         user: process.env.MAIL_USER,
         pass: process.env.MAIL_PASS,
       },
-      // Configurações vitais para não travar a requisição (Hanging)
-      connectionTimeout: 10000, // 10s para conectar
-      greetingTimeout: 5000,    // 5s para o Hello
-      socketTimeout: 15000,     // 15s de inatividade
-      logger: true,             // Mostra o log detalhado no Dashboard do Render
+      tls: {
+        ciphers: 'SSLv3', // Compatibilidade
+        rejectUnauthorized: false 
+      },
+      // [A MÁGICA ESTÁ AQUI]
+      family: 4, // Força o Node a usar IPv4 (Resolve o ETIMEDOUT de IPv6)
+      
+      // Timeouts ajustados
+      connectionTimeout: 10000, // 10s
+      greetingTimeout: 5000,    // 5s
+      socketTimeout: 20000,     // 20s
+      logger: true,
       debug: false
     });
 
     try {
-      console.log(`Tentando enviar e-mail via ${process.env.MAIL_USER}...`);
+      console.log(`📨 Enviando (IPv4 Force) via ${process.env.MAIL_USER}...`);
 
-      // 3. Envio do E-mail
-      await transporter.sendMail({
-        from: `"Fale Conosco - AgroCoop" <${process.env.MAIL_USER}>`,
+      const info = await transporter.sendMail({
+        from: `"Fale Conosco" <${process.env.MAIL_USER}>`,
         to: process.env.MAIL_USER, 
         replyTo: email, 
         subject: `Nova mensagem de: ${nome}`, 
-        text: `
-          Nome: ${nome}
-          E-mail: ${email}
-          
-          Mensagem:
-          ${mensagem}
-        `,
+        text: `Nome: ${nome}\nE-mail: ${email}\n\nMensagem:\n${mensagem}`,
         html: `
-          <h3>Nova mensagem do site AgroCoop</h3>
-          <p><strong>Nome:</strong> ${nome}</p>
-          <p><strong>E-mail:</strong> ${email}</p>
+          <h3>AgroCoop - Nova Mensagem</h3>
+          <p><strong>De:</strong> ${nome} (${email})</p>
           <hr>
-          <p><strong>Mensagem:</strong><br> ${mensagem}</p>
+          <p>${mensagem}</p>
         `
       });
 
-      console.log("✅ E-mail despachado com sucesso!");
+      console.log("✅ Sucesso! ID:", info.messageId);
       return res.status(200).json({ message: "E-mail enviado com sucesso!" });
 
     } catch (error) {
-      console.error("❌ Erro CRÍTICO ao enviar e-mail:", error);
-      // Retorna erro 500 imediato para o frontend destravar o botão
+      console.error("❌ Erro SMTP:", error);
       return res.status(500).json({ 
-          error: "Falha ao enviar e-mail. Tente novamente mais tarde.",
-          detalhes: error.message 
+          error: "Não foi possível enviar o e-mail no momento.",
+          detalhes: error.code // Retorna o código (ETIMEDOUT, EAUTH) para ajudar
       });
     }
   }
