@@ -59,6 +59,12 @@ app.use(userRoutes);
 const sequelize = process.env.DATABASE_URL 
     ? new Sequelize(process.env.DATABASE_URL, {
         dialect: 'postgres',
+        // [FIX CRÍTICO] Adicionando a configuração global para snake_case em produção
+        define: {
+            timestamps: true,
+            underscored: true,
+            underscoredAll: true
+        },
         dialectOptions: {
             ssl: {
                 require: true,
